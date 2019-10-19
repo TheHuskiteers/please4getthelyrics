@@ -27,3 +27,21 @@ h2 {
     font-size: 20px;
     width: max-content;
 }
+
+#joining {
+    display: block;
+    /* display: none; */
+}
+
+#playing {
+    display: none;
+    /* display: block; */
+}
+
+#waiting {
+    display: block;
+}
+
+#singing {
+    display: none;
+}
