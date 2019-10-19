@@ -3,3 +3,4 @@ node_modules/
 shell.nix
 .idea/
 yarn-error.log
+.DS_Store
