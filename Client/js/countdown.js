@@ -4,10 +4,16 @@ timeleft--;
 document.getElementById("countdowntimer").textContent = timeleft;
 if(timeleft <= 0){
     clearInterval(downloadTimer);
-    load_home();
+    turn();
 }
 },1000);
 
-function load_home() {
-    document.getElementById("content").innerHTML='<object type="text/html" data="home.html" ></object>';
+function turn() {
+    var myturn = false;
+    if (myturn == true){
+        window.location.href = "../html/myturn.html";
+    }
+    else{
+        window.location.href = "../html/waitturn.html";
+    }
 }
