@@ -2,3 +2,4 @@ node_modules/
 .envrc
 shell.nix
 .idea/
+yarn-error.log
