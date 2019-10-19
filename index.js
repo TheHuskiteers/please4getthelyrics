@@ -19,7 +19,7 @@ var spotifyApi = new SpotifyWebApi({
 const scopes = ['streaming', 'user-modify-playback-state']
 
 app.get('/', (req, res) => {
-  res.sendFile('game.html')
+  res.redirect('/game.html')
 })
 
 app.get('/login', (req, res) => {
