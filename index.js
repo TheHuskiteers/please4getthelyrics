@@ -33,9 +33,9 @@ app.get('/api/spotify_login/spotify_redirect', function(req, res) {
 	},
 	json: true
     };
-    var token = request.post(options, function(req, res) {return req.body});
-    console.log(token);
-    res.cookie('token', token, {expires: token.expires_in + Date.now()}).send('cookie set');
+    request.post(options, function(err, response, body) {
+	res.cookie('token', body, {expires_in: body.expires_in + Date.now()}).send('cookie set');
+    });
 });
 
 app.listen(port, () => console.log('please4getthelyrics listening on port ' + port));
