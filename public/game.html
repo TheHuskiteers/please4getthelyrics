@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Spotify Web Playback SDK Quick Start Tutorial</title>
+  <title>Please 4get The Lyrics</title>
 </head>
+<link rel="stylesheet" href="/css/game.css">
 <body>
-  <h1>Spotify Web Playback SDK Quick Start Tutorial</h1>
-  <h2>Open your console log: <code>View > Developer > JavaScript Console</code></h2>
+  <div class="container1">
+    <h1 id="waiting">Waiting for players to join...</h1>
+    <p>Socket countdown should go here</p>
+  </div>
+
+  <div class="container2">
+    <h2>Room ID:</h2>
+    <p id="code">Socket connect code should go here</p>
+  </div>
+
 
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script>
     window.onSpotifyWebPlaybackSDKReady = () => {
-	const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+      if (document.cookie.indexOf('token') == -1) {
+	      window.location = "http://localhost:3000/login"
+      }
+      const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
       const player = new Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
+        name: 'Please 4get The Lyrics',
         getOAuthToken: cb => { cb(token); }
       });
 

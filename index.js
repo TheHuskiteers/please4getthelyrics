@@ -1,58 +1,39 @@
+var path = require('path')
 var express = require('express')
 var app = express()
-var request = require('request')
-var querystring = require('querystring')
+var SpotifyWebApi = require('spotify-web-api-node')
 var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
 
 app.use(cookieParser())
-app.use(bodyParser.json())
+
+app.use(express.static(path.join(__dirname, '/public')))
 
 const port = 3000
-const env = process.env
 
-app.get('/', function (req, res) {
-  console.log(req.cookies.token)
-  if (req.cookies.token) {
-    res.sendFile('./spotify.html', { root: __dirname })
-  } else {
-    res.redirect('/login')
-  }
+var spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  redirectUri: process.env.REDIRECT_URI
 })
 
-app.get('/:id', function (req, res) {
+const scopes = ['streaming', 'user-modify-playback-state']
 
+app.get('/', (req, res) => {
+  res.sendFile('game.html')
 })
 
-app.get('/login', function (req, res) {
-  if (!req.cookies.token) {
-    res.redirect('https://accounts.spotify.com/authorize?' + querystring.stringify({
-      client_id: env.SPOTIFY_CLIENT_ID,
-      response_type: 'code',
-      redirect_uri: env.REDIRECT_URI,
-      scope: 'streaming'
-    }))
-  }
+app.get('/login', (req, res) => {
+  res.redirect(spotifyApi.createAuthorizeURL(scopes))
 })
 
-app.get('/api/spotify_login/spotify_redirect', function (req, res) {
-  var options = {
-    url: 'https://accounts.spotify.com/api/token',
-    form: {
-      grant_type: 'authorization_code',
-      code: req.query.code,
-      redirect_uri: env.REDIRECT_URI
-    },
-    headers: {
-      Authorization: 'Basic ' + Buffer.from(env.SPOTIFY_CLIENT_ID + ':' + env.SPOTIFY_CLIENT_SECRET).toString('base64')
-    },
-    json: true
-  }
-  request.post(options, function (err, response, body) {
-    if (err) console.log('Yikes.')
-    res.cookie('token', body.access_token, { expires_in: body.expires_in + Date.now() }).send('cookie set')
-  })
-  res.redirect('/')
+app.get('/callback', (req, res) => {
+  const { code } = req.query
+  spotifyApi.authorizationCodeGrant(code).then((data) => {
+    spotifyApi.setAccessToken(data.body.access_token)
+    spotifyApi.setRefreshToken(data.body.refresh_token)
+    res.cookie('token', data.body.access_token)
+    res.redirect('/game.html')
+  }).catch((err) => console.log('Yikes! ' + err.message))
 })
 
 app.listen(port, () => console.log('please4getthelyrics listening on port ' + port))

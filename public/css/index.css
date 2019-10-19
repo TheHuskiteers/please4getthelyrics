@@ -35,7 +35,7 @@
         margin-top: -400px;
     }
     100% {
-        margin-top: 20vh;
+        margin-top: 15vh;
     }
 }
   
@@ -89,7 +89,7 @@ body {
 }
 
 #title {
-    margin-top: 20vh;
+    margin-top: 15vh;
     color: #0069ed;
     font-style: italic;
     font-family: 'broadway';
@@ -108,10 +108,10 @@ h3 {
 }
 
 .container {
-    margin-bottom: 100px;
+    margin-bottom: 75px;
 }
 
-button, #join {
+#start, #join {
     margin-bottom: 50px;
     display: inline-block;
     border-radius: 10px;
@@ -121,13 +121,13 @@ button, #join {
     cursor: pointer;
     text-align: center;
 }
-button:hover {
-    background: #2280f3;
+#start:hover {
+    background: #3099fc;
 }
 
-button {
+#start {
     padding: 1rem 2rem;
-    border: 2px solid #2280f3;
+    border: 2px solid #3099fc;
     background: #0069ed;
     color: #ffffff;
 }
@@ -151,10 +151,17 @@ p {
 input {
     margin-bottom: 15px;
     font-size: 20px;
+    border: none;
+    border-bottom: 2px solid #ff9900;
+    color: #ff9900;
+    background-color: transparent;
 }
 
-#roomNum {
-    border: None;
-    border-bottom: 1px solid grey;
+input::placeholder {
+  color: #ff9900;
+}
+
+input:focus {
+  outline: none;
 }
 
