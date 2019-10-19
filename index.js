@@ -14,19 +14,20 @@ const env = process.env;
 app.get('/', function(req, res) {
     console.log(req.cookies['token']);
     if (req.cookies['token']) {
-	res.sendFile('./spotify.html', {root: __dirname});
+	     res.sendFile('./spotify.html', {root: __dirname});
     } else {
-	res.redirect('/login');
+	    res.redirect('/login');
     }
 });
 
 app.get('/:id', function(req, res) {
-    
+
 });
 
 app.get('/login', function(req, res) {
+
     if (!req.cookies['token']) {
-	res.redirect('https://accounts.spotify.com/authorize?' +	     
+	res.redirect('https://accounts.spotify.com/authorize?' +
 		     querystring.stringify({
 			 client_id: env.SPOTIFY_CLIENT_ID,
 			 response_type: 'code',
