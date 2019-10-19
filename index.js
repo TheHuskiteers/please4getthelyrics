@@ -11,13 +11,28 @@ app.use(bodyParser.json());
 const port = 3000;
 const env = process.env;
 
+app.get('/', function(req, res) {
+    console.log(req.cookies['token']);
+    if (req.cookies['token']) {
+	res.sendFile('./spotify.html', {root: __dirname});
+    } else {
+	res.redirect('/login');
+    }
+});
+
+app.get('/:id', function(req, res) {
+    
+});
+
 app.get('/login', function(req, res) {
-    res.redirect('https://accounts.spotify.com/authorize?' +	     
-		 querystring.stringify({
-		     client_id: env.SPOTIFY_CLIENT_ID,
-		     response_type: 'code',
-		     redirect_uri: env.REDIRECT_URI,
-		     scope: 'streaming'}));
+    if (!req.cookies['token']) {
+	res.redirect('https://accounts.spotify.com/authorize?' +	     
+		     querystring.stringify({
+			 client_id: env.SPOTIFY_CLIENT_ID,
+			 response_type: 'code',
+			 redirect_uri: env.REDIRECT_URI,
+			 scope: 'streaming'}));
+    }
 });
 
 app.get('/api/spotify_login/spotify_redirect', function(req, res) {
@@ -34,8 +49,9 @@ app.get('/api/spotify_login/spotify_redirect', function(req, res) {
 	json: true
     };
     request.post(options, function(err, response, body) {
-	res.cookie('token', body, {expires_in: body.expires_in + Date.now()}).send('cookie set');
+	res.cookie('token', body.access_token, {expires_in: body.expires_in + Date.now()}).send('cookie set');
     });
+    res.redirect('/');
 });
 
 app.listen(port, () => console.log('please4getthelyrics listening on port ' + port));
