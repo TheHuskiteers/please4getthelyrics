@@ -35,7 +35,7 @@
         margin-top: -400px;
     }
     100% {
-        margin-top: 20vh;
+        margin-top: 15vh;
     }
 }
   
@@ -89,7 +89,7 @@ body {
 }
 
 #title {
-    margin-top: 20vh;
+    margin-top: 15vh;
     color: #0069ed;
     font-style: italic;
     font-family: 'broadway';
@@ -108,7 +108,7 @@ h3 {
 }
 
 .container {
-    margin-bottom: 100px;
+    margin-bottom: 75px;
 }
 
 #start, #join {
