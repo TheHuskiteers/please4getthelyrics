@@ -1,4 +1,4 @@
-# HackUMass-VII
+# Speech to Text
 Real-time speech to text translation via microphone input and Google Cloud Speech to Text API
 
 ## About
