@@ -19,5 +19,7 @@ window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecogn
    recognition.start();
    recognition.onspeechend = function() {
      document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
+     document.getElementById("aura").style.animationName = "false";
+     document.getElementById("aura").style.background  = "transparent";
      recognition.stop();
    }
