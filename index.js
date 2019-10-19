@@ -5,8 +5,10 @@ var server = require('http').createServer(app)
 var io = require('socket.io')(server)
 var SpotifyWebApi = require('spotify-web-api-node')
 var cookieParser = require('cookie-parser')
+var bodyParser = require('body-parser')
 
 app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(express.static(path.join(__dirname, '/public')))
 
@@ -28,7 +30,7 @@ function Room (host, clients) {
 }
 
 io.on('connection', (socket) => {
-  console.log("something joined");
+  console.log('something joined')
 
   // handle host joining
   socket.on('host join', () => {
@@ -60,6 +62,10 @@ io.on('connection', (socket) => {
     if (socket.host) {
       delete rooms[socket.roomId]
       // TODO: have clients timeout when room deleted
+    } else if (socket.room) {
+      // if socket is host, remove from clients array, then update host
+      socket.room.clients = socket.room.clients.filter((obj) => { return obj.id !== socket.id })
+      socket.room.host.emit('host room info', { roomId: socket.roomId, clientLength: socket.room.clients.length })
     }
   })
 })
@@ -95,6 +101,12 @@ app.get('/callback', (req, res) => {
     spotifyApi.setAccessToken(data.body.access_token)
     spotifyApi.setRefreshToken(data.body.refresh_token)
     res.cookie('token', data.body.access_token)
-    res.redirect('/game.html')
+    res.redirect('/host.html')
   }).catch((err) => console.log('Yikes! ' + err.message))
+})
+
+app.post('/connect-to-room', (req, res) => {
+  console.log(req.body.roomNum)
+  res.cookie('roomNum', req.body.roomNum)
+  res.redirect('/client.html')
 })
