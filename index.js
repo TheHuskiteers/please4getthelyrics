@@ -19,7 +19,17 @@ var spotifyApi = new SpotifyWebApi({
 const scopes = ['streaming', 'user-modify-playback-state']
 
 app.get('/', (req, res) => {
-  res.sendFile('game.html')
+  res.redirect('/game.html')
+})
+
+app.get('/join/:id', (req, res) => {
+    // Socket logic to join room goes here
+})
+
+app.get('/togglePlay', (req, res) => {
+    // Toggle state of current song
+    // Get room # from request
+    var roomId = req.room   
 })
 
 app.get('/login', (req, res) => {
