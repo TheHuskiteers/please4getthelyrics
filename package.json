@@ -17,6 +17,7 @@
   },
   "scripts": {
     "lint": "standard",
-    "lint-fix": "standard --fix"
+    "lint-fix": "standard --fix",
+    "nm": "nodemon index.js"
   }
 }
