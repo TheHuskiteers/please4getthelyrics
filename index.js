@@ -12,6 +12,7 @@ app.use(express.static(path.join(__dirname, '/public')))
 
 const port = 3000
 
+server.listen(port, () => console.log('Server listening on port ' + port))
 // Room id creator
 var ID = function () {
   // Math.random should be unique because of its seeding algorithm.
@@ -27,6 +28,8 @@ function Room (host, clients) {
 }
 
 io.on('connection', (socket) => {
+  console.log("something joined");
+
   // handle host joining
   socket.on('host join', () => {
     socket.host = true
@@ -95,5 +98,3 @@ app.get('/callback', (req, res) => {
     res.redirect('/game.html')
   }).catch((err) => console.log('Yikes! ' + err.message))
 })
-
-server.listen(port, () => console.log('Server listening on port ' + port))

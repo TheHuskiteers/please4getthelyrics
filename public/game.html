@@ -10,7 +10,7 @@
       <h1 id="waiting">Waiting for players to join...</h1>
       <p>Socket countdown should go here</p>
     </div>
-  
+
     <div class="container2">
       <h2>Karaoke Room ID:</h2>
       <p id="code">Room ID should go here</p>
@@ -76,6 +76,15 @@
     };
 
 
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  var socket = io();
+  function createGame() {
+    socket.emit('host join');
+    console.log("game creating");
+  }
+  createGame();
   </script>
 </body>
 </html>
