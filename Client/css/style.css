@@ -2,7 +2,6 @@
 body {
     height: 100% !important;
     background-color: #88BEE8FF !important;
-    transform: rotate(180deg);
 }
 
 .row-centered {
@@ -37,8 +36,23 @@ body {
 }
 
 .pic {
-    height: 50%;
-    width: 50%;
+    height: 75%;
+    width: 75%;
+    opacity: 1.0;
+    margin-top:10%;
+}
+
+.aura{
+  width: 40vh;
+  height: 40vh;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius: 100%;
+  background: radial-gradient(#ffffff, transparent);
+  animation-name: pulse;
+  animation-duration: .25s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 .pic_border {
@@ -67,7 +81,19 @@ body {
 .loading:after {
     content: ' .';
     animation: dots 1s steps(5, end) infinite;}
-  
+
+@keyframes pulse{
+  0%{
+    background: radial-gradient(#ffffff 10%, transparent);
+  }
+  50%{
+    background: radial-gradient(#ffffff 20%, transparent);
+  }
+  100%{
+    background: radial-gradient(#ffffff 30%, transparent);
+  }
+}
+
 @keyframes dots {
   0%, 20% {
     color: #4B0082;
@@ -87,10 +113,4 @@ body {
     text-shadow:
       .25em 0 0 white,
       .5em 0 0 white;}
-}
-
-@media only screen and (min-width: 768px) {
-  body{
-    transform: rotate(0deg);
-  }
 }
