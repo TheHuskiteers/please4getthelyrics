@@ -3,7 +3,7 @@
 <head>
   <title>Please 4get The Lyrics</title>
 </head>
-<link rel="stylesheet" href="/css/game.css">
+<link rel="stylesheet" href="/css/host.css">
 <body>
   <div id="joining">
     <div class="container1">
@@ -83,6 +83,9 @@
     socket.emit('host join');
     console.log("game creating");
   }
+  socket.on('host room info', (info) => {
+      console.log(info);
+  })
   createGame();
   </script>
 </body>

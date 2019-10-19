@@ -2,6 +2,7 @@
 body {
     height: 100% !important;
     background-color: #88BEE8FF !important;
+    transform: rotate(180deg);
 }
 
 .row-centered {
@@ -88,3 +89,8 @@ body {
       .5em 0 0 white;}
 }
 
+@media only screen and (min-width: 768px) {
+  body{
+    transform: rotate(0deg);
+  }
+}
