@@ -6,6 +6,9 @@
   "author": "Haha",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "request": "^2.88.0"
   }
 }
