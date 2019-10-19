@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: 'sans-serif', 'Helvetica';
+}
+
+.container1 {
+    margin: 15vh 0 15vh 0;
+}
+
+.container2 {
+
+}
+
+h2 {
+    color: #ff9900;
+}
+
+#code {
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    border: 2px solid #ffc420;
+    border-radius: 20px;
+    background-color: #ff9900;
+    color: white;
+    font-size: 20px;
+    width: max-content;
+}

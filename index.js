@@ -19,7 +19,7 @@ var spotifyApi = new SpotifyWebApi({
 const scopes = ['streaming', 'user-modify-playback-state']
 
 app.get('/', (req, res) => {
-  res.sendFile('index.html')
+  res.sendFile('game.html')
 })
 
 app.get('/login', (req, res) => {
@@ -32,7 +32,7 @@ app.get('/callback', (req, res) => {
     spotifyApi.setAccessToken(data.body.access_token)
     spotifyApi.setRefreshToken(data.body.refresh_token)
     res.cookie('token', data.body.access_token)
-    res.redirect('/')
+    res.redirect('/game.html')
   }).catch((err) => console.log('Yikes! ' + err.message))
 })
 
