@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
   } else {
     res.redirect('/login')
   }
-});
+})
 
 app.get('/:id', function (req, res) {
 
