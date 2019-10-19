@@ -35,17 +35,9 @@ body {
     height: 100%; 
 }
 
-.glow {
-    -webkit-box-shadow: 0px 0px 5px 15px #ffffff;
-    -moz-box-shadow: 0px 0px 5px 15px #ffffff;
-    box-shadow: 0px 0px 5px 15px #ffffff; 
-    background-color: #2C4ED1;
-}
-
 .pic {
     height: 50%;
     width: 50%;
-    border-radius: 50%;
 }
 
 .pic_border {
