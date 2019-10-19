@@ -10,5 +10,9 @@
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
   <script type="text/javascript">
     var socket = io();
+    socket.emit('host join');
+    socket.on('host room info', (info) => {
+      console.log(info);
+    })
   </script>
 </html>
