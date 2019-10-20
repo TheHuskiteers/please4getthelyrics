@@ -107,6 +107,10 @@ app.get('/callback', (req, res) => {
 
 app.post('/connect-to-room', (req, res) => {
   console.log(req.body.roomNum)
-  res.cookie('roomNum', req.body.roomNum)
-  res.redirect('/client.html')
+  if (rooms[req.body.roomNum] != undefined) {
+    res.cookie('roomNum', req.body.roomNum)
+    res.redirect('/client.html')
+  }
+  // not easy to return error msg to form submit
+  // so just do nothing if roomId DNE
 })
