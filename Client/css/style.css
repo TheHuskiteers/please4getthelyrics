@@ -22,17 +22,27 @@ body {
   font-weight: 600;
   font-size: 30px;
   color: #0069ed;
-  margin-right:-4px;
   text-align: center !important;
   background-color: #e6e6e6;
 }
 
-.col-border {
-border-style: solid;
-border-color: #0069ed;
-border-top: none;
-box-shadow: 0 0 10px 5px #0069ed;
-}
+.col-border-top {
+  border-style: solid;
+  border-color: #0069ed;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: 0 0 10px 5px #0069ed;
+  }
+
+.col-border-bottom {
+  border-style: solid;
+  border-color: #0069ed;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: 0 0 10px 5px #0069ed;
+  }
 
 .fill {
   min-height: 100%;
@@ -56,18 +66,18 @@ float: right;
 }
 
 #aura{
-width: 40vh;
-height: 40vh;
-margin-left:auto;
-margin-right:auto;
-border-radius: 100%;
-background: transparent;
-animation-name: pulse;
-animation-play-state: running;
-animation-duration: .5s;
-animation-iteration-count: infinite;
-animation-direction: alternate;
-box-shadow: 0 0 4px 8px rgba(137, 137, 137, 0.5);
+  width: 40vh;
+  height: 40vh;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius: 100%;
+  background: transparent;
+  animation-name: pulse;
+  animation-play-state: running;
+  animation-duration: .5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  box-shadow: 0 0 4px 8px rgba(137, 137, 137, 0.5);
 }
 
 .pic_border {
