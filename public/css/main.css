@@ -1,3 +1,7 @@
+:root {
+  --key-color: #e6e6e6; 
+}
+
 @font-face {
     font-family: 'broadway';
     src: url('../fonts/broadway/broadway3d-italic-webfont.woff2') format('woff2'),
@@ -86,6 +90,11 @@ body {
     margin: 0;
     text-align: center;
     font-family: 'Open Sans', 'sans-serif', 'Helvetica';
+}
+
+#client-body {
+   height: 100% !important;
+    background-color: #c4c4c4 !important;
 }
 
 #title {
@@ -329,6 +338,170 @@ Round-based Classes
 }
 #mysteryLyric{
   color: rgb(90, 0, 149);
+}
+
+/*
+Client CSS dump, may need to be readjusted later...
+*/
+
+.row-centered {
+  text-align:center;
+}
+.col-centered {
+  display:inline-block;
+  width: 50%;
+  float:none;
+  /* reset the text-align */
+  text-align:center;
+  /* inline-block space fix */
+  font-family: 'sans-serif', 'Helvetica';
+  font-weight: 600;
+  font-size: 30px;
+  color: #0069ed;
+  text-align: center !important;
+  background-color: #e6e6e6;
+}
+
+.col-border-top {
+  border-style: solid;
+  border-color: #0069ed;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: 0 0 10px 5px #0069ed;
+  }
+
+.col-border-bottom {
+  border-style: solid;
+  border-color: #0069ed;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: 0 0 10px 5px #0069ed;
+  }
+
+.fill {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%; 
+}
+
+#scorespan {
+  display: none;
+}
+
+.foot-left{
+  text-align: left;
+}
+
+.foot-right{
+float: right;
+}
+
+.pic {
+  height: 75%;
+  width: 75%;
+  opacity: 1.0;
+  margin-top:10%;
+}
+
+#aura{
+  width: 40vh;
+  height: 40vh;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius: 100%;
+  background: transparent;
+  animation-name: pulse;
+  animation-play-state: running;
+  animation-duration: .5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  box-shadow: 0 0 4px 8px rgba(137, 137, 137, 0.5);
+}
+
+.pic_border {
+  margin-top: 225px; 
+  background-color: #c4c4c4;
+}
+
+.speech {
+border: 1px solid #DDD; 
+width: 300px; 
+padding: 0; 
+margin: 0;
+}
+
+.speech input {
+border: 0; 
+width: 240px; 
+display: inline-block; 
+height: 30px;
+}
+.speech img {
+float: right; 
+width: 40px;
+}
+
+.loading:after {
+  content: ' .';
+  animation: dots 1s steps(5, end) infinite;}
+
+@keyframes pulse{
+0%{
+  background: radial-gradient(var(--key-color) 5%, transparent);
+}
+10%{
+  background: radial-gradient(var(--key-color) 10%, transparent);
+}
+20%{
+  background: radial-gradient(var(--key-color) 20%, transparent);
+}
+30%{
+  background: radial-gradient(var(--key-color) 25%, transparent);
+}
+40%{
+  background: radial-gradient(var(--key-color) 30%, transparent);
+}
+50%{
+  background: radial-gradient(var(--key-color) 35%, transparent);
+}
+60%{
+  background: radial-gradient(var(--key-color) 40%, transparent);
+}
+70%{
+  background: radial-gradient(var(--key-color) 45%, transparent);
+}
+80%{
+  background: radial-gradient(var(--key-color) 50%, transparent);
+}
+90%{
+  background: radial-gradient(var(--key-color) 55%, transparent);
+}
+100%{
+  background: radial-gradient(var(--key-color) 60%, transparent);
+}
+}
+
+@keyframes dots {
+0%, 20% {
+  color: #0069ed;
+  text-shadow:
+    .25em 0 0 #0069ed,
+    .5em 0 0 #0069ed;}
+40% {
+  color: white;
+  text-shadow:
+    .25em 0 0 #0069ed,
+    .5em 0 0 #0069ed;}
+60% {
+  text-shadow:
+    .25em 0 0 white,
+    .5em 0 0 #0069ed;}
+80%, 100% {
+  text-shadow:
+    .25em 0 0 white,
+    .5em 0 0 white;}
 }
 
 
