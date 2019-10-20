@@ -15,7 +15,9 @@
     <p id="code">Loading...</p>
   </div>
 
-  <div id="nameGrid"></div>
+  <div id="nameGrid">
+    <div>example name</div>
+  </div>
 
   <button class="btn" onclick="">Start game!</button>
 
@@ -83,22 +85,31 @@
     socket.on('update pregame info', (info) => {
         console.log(info);
         document.getElementById("curPlayers").innerHTML = "Current players: " + info.clients.length;
-        if (info.newAlias != undefined) {
-          clients = info.clients; // updates client list
-          clientAliases = info.clients.map((client) => { // updates alias list (for convenience)
-            return client[alias];
-          })
+        clients = info.clients; // updates client list
+        clientAliases = info.clients.map((client) => { // updates alias list (for convenience)
+          return client.alias;
+        })
 
-          // shows player aliases in grid on host screen
-          for (alias in clientAliases) {
-            var newDiv = document.createElement("div");
-            var alias = document.createTextNode(info.alias); 
-            newDiv.appendChild(alias);
+        console.log(clientAliases);
 
-            var gridDiv = document.getElementById("nameGrid"); 
-            gridDiv.appendChild(newDiv);
-          }
-        } else if (info.removeAlias != undefined) {
+        // shows player aliases in grid on host screen
+        // first clear all current users:
+        var gridDiv = document.getElementById("nameGrid"); 
+        while (gridDiv.firstChild) {
+          gridDiv.removeChild(gridDiv.firstChild);
+        }
+        
+        // create new children (aliases) to appear
+        for (var i = 0; i < clientAliases.length; i++) {
+          console.log(clientAliases[i]);
+          var newDiv = document.createElement("div");
+          var newAlias = document.createTextNode(clientAliases[i]); 
+          newDiv.appendChild(newAlias);
+
+          gridDiv.appendChild(newDiv);
+        }
+      
+        if (info.removeAlias != undefined) {
           clientAliases = clientAliases.filter(e => e !== info.removeAlias);
         }
 

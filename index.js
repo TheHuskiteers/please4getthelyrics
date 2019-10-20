@@ -108,7 +108,6 @@ function Room (host) {
     return client_data;
   }
   this.open = true;
-  this.roomSize = roomSize;
   this.songOrder = shuffle(jsonLyricFiles);
 
 }
@@ -145,9 +144,7 @@ io.on('connection', (socket) => {
 
 
   // handle client joining
-  socket.on('client join', (input) => {
-    const roomId = input[roomId];
-    const alias = input[alias];
+  socket.on('client join', (roomId, alias) => {
     console.log("Yay for " + roomId + alias);
     if(rooms[roomId] && rooms[roomId].open){
       socket.alias = alias
@@ -178,6 +175,7 @@ io.on('connection', (socket) => {
     console.log((socket.host) ? 'Host ' + socket.id + " has left, because of '" + reason + "'." : 'Client ' + socket.id + " has left, because of '" + reason + "'.")
 
     // delete room
+    
     if (socket.host) {
       delete rooms[socket.roomId]
       // TODO: have clients timeout when room deleted
@@ -185,8 +183,7 @@ io.on('connection', (socket) => {
       // if socket isn't host, remove from clients array, then update host
       const alias = socket.alias
       socket.room.clients = socket.room.clients.filter((obj) => { return obj.id !== socket.id })
-      socket.room.host.emit('host room info', { roomId: socket.roomId, clientLength: socket.room.clients.length, removeAlias: alias })
-      socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients()});
+      socket.room.host.emit('update pregame info', { roomId: socket.host, clients: socket.room.getClients() });
     }
   })
 })
