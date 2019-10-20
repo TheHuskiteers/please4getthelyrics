@@ -268,7 +268,7 @@ h2 {
 /*
 Round-based Classes
 */
-#roundDiv{
+#gameDiv{
   height: 100%;
   width: 100%;
   background-color: rgb(230, 230, 230);
@@ -311,6 +311,9 @@ Round-based Classes
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   background-color: rgb(240, 240, 240);
+}
+#mysteryLyric{
+  color: rgb(90, 0, 149);
 }
 
 
