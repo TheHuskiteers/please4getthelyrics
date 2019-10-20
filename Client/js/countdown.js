@@ -34,16 +34,24 @@ function mic() {
                 interimTranscript += transcript;
             }
             }
-            document.querySelector('p').innerHTML = finalTranscript + '<i style="color:#ddd;">' + interimTranscript + '</>';
+            document.querySelector('p').innerHTML = finalTranscript + '<i style="color:#6e6e6e;">' + interimTranscript + '</>';
         }
+        document.documentElement.style.setProperty('--key-color', '#e6e6e6');
         recognition.start();
         recognition.onspeechend = function() {
-            document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
-            document.getElementById("aura").style.animationName = "false";
             document.documentElement.style.setProperty('--key-color', '#e6e6e6');
+            document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
             recognition.stop();
+            results();
         }
       }, 1000);
+}
+
+function results() {
+    document.documentElement.style.setProperty('--key-color', '#e6e6e6');
+    document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
+    var words = document.getElementById("load").innerHTML;;
+    console.log(words);
 }
 
 timer();

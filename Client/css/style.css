@@ -1,6 +1,5 @@
 /* centered columns styles */
 :root {
-  --color: #c4c4c4;
   --key-color: #e6e6e6;
 }
 
@@ -68,7 +67,6 @@ animation-duration: .5s;
 animation-iteration-count: infinite;
 animation-direction: alternate;
 box-shadow: 0 0 4px 8px rgba(137, 137, 137, 0.5);
-opacity: 85%;
 }
 
 .pic_border {
@@ -100,15 +98,18 @@ width: 40px;
 
 @keyframes pulse{
 0%{
+  background: radial-gradient(var(--key-color) 5%, transparent);
+}
+20%{
   background: radial-gradient(var(--key-color) 10%, transparent);
 }
-25%{
+40%{
   background: radial-gradient(var(--key-color) 15%, transparent);
 }
-50%{
+60%{
   background: radial-gradient(var(--key-color) 20%, transparent);
 }
-75%{
+80%{
   background: radial-gradient(var(--key-color) 25%, transparent);
 }
 100%{
