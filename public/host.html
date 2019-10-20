@@ -26,7 +26,7 @@
 
   <div style="display:none;" id="gameDiv">
     <div id = "roundHeader">
-      <h2>Round<span id="roundNum"> 1</span></h2>
+      <h2>Round <span id="roundNum">0</span></h2>
     </div>
     <div id = "roundWordSpace">
       <div id="lyrics">
@@ -160,7 +160,10 @@
     })
     socket.on('game info', (info) => {
       let responseBox = document.getElementById("responseText");
-      responseBox.innerHTML = ''
+      let roundNum = document.getElementById("roundNum")
+      roundNum.innerHTML = parseInt(roundNum.innerHTML) + 1 + ''
+      responseBox.innerHTML = "It's " + info.currentPlayer + "'s Turn!"
+      responseBox.style.color = "blue"
       //take the info created from processRoundData and spotify URI, put it on screen
       currentRoundInfo = info
       let songURI = info.spotifyURI;
@@ -184,20 +187,20 @@
     socket.on('round results', (results) =>{
       let responseBox = document.getElementById("responseText");
       console.log(results);
+      info = currentRoundInfo
+      let songURI = info.spotifyURI;
+      let roundLineData = info.roundLineData
+      let allLines = roundLineData.finalLineCouple
+      let startTimestamp = allLines[0].timestamp
+      let endTimestamp = allLines[allLines.length - 1].timestamp
+      let clipLength = (endTimestamp-startTimestamp) * 1000
+      emptyLyrics(lyricBox)
+      inputJSONLyrics(lyricBox,allLines)
       if(results.correct){
         //Fill in the underscores with 
         responseBox.style.color = "green"
         responseBox.innerHTML = 'That is Correct! You said "' + results.transcription + '""'
       } else{
-        info = currentRoundInfo
-        let songURI = info.spotifyURI;
-        let roundLineData = info.roundLineData
-        let allLines = roundLineData.finalLineCouple
-        let startTimestamp = allLines[0].timestamp
-        let endTimestamp = allLines[allLines.length - 1].timestamp
-        let clipLength = (endTimestamp-startTimestamp) * 1000
-        emptyLyrics(lyricBox)
-        inputJSONLyrics(lyricBox,allLines)
         var fullURI = "spotify:track:" + info.spotifyURI
         responseBox.style.color = "red"
         responseBox.innerHTML = 'Sorry, that is incorrect. You said "' + results.transcription + '"'
@@ -205,10 +208,11 @@
         playLyrics(lyricBox);
         setTimeout(function(){
         pause();
-        // socket.emit('NEXT THING'); //emit 5 seconds before pause
-        }, clipLength);
-        //TODO: Remove this text when a new round starts.
+        }, clipLength + 1000);
       }
+      setTimeout(function(){
+        socket.emit('new round');
+        }, clipLength + 2000);
     })
     createGame();
   </script>

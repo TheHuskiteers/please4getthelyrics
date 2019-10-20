@@ -120,7 +120,7 @@ function Room (host) {
   }
   this.open = true;
   this.songOrder = shuffle(jsonLyricFiles);
-  this.currentPlayer = 0;
+  this.currentPlayerIndex = -1;
 
 }
 
@@ -150,21 +150,22 @@ io.on('connection', (socket) => {
   })
 
   socket.on('gimme da line', () => {
-    currentPlayer = socket.room.clients.pop()
+    currentPlayer = socket.room.clients[socket.room.currentPlayerIndex]
     currentPlayer.emit('gimme da line');
-
     //Once the player has said the line, put the player at the back of the player order.
-    // socket.room.currentPlayer = socket.room.currentPlayer + 1 >= socket.clients.length ? 0 : socket.room.currentPlayer + 1
   })
 
   socket.on('new round', () => {
+    socket.room.currentPlayerIndex = (socket.room.currentPlayerIndex + 1) % socket.room.clients.length
+    currentPlayerName = socket.room.clients[socket.room.currentPlayerIndex].alias
+    console.log(JSON.stringify(currentPlayerName))
     if(socket.room.songOrder.length == 0){
       //TODO: End Game.
     } else{
       const nextSong = socket.room.songOrder.pop()
       const spotifyURI = nextSong.spotifyURI
       socket.room.roundLineData = processRoundData(nextSong.lyricData)
-      socket.emit('game info', { spotifyURI: spotifyURI, roundLineData: socket.room.roundLineData })
+      socket.emit('game info', { spotifyURI: spotifyURI, roundLineData: socket.room.roundLineData, currentPlayer: currentPlayerName})
     }
   })
 
@@ -203,8 +204,8 @@ io.on('connection', (socket) => {
     }
     return freq;
     };
-    var tFreq = getFrequency(transcription.replace(/\W/g, ''));
-    var aFreq = getFrequency(socket.room.roundLineData.answer.replace(/\W/g, ''));
+    var tFreq = getFrequency(transcription.replace(/\W/g, '').toLowerCase());
+    var aFreq = getFrequency(socket.room.roundLineData.answer.replace(/\W/g, '').toLowerCase());
     console.log(tFreq);
     console.log(aFreq);
     var diff = 0;
@@ -222,6 +223,9 @@ io.on('connection', (socket) => {
       transcription: transcription,
       correct: correct,
       answer: socket.room.roundLineData.answer
+    }
+    for (client of socket.room.clients) {
+      client.emit('game start')
     }
     socket.room.host.emit('round results', results)
   })
