@@ -212,6 +212,61 @@ h2 {
 #singing {
   display: none;
 }
+
+/*
+Game text scrolling, for pieces that are automatically added.
+*/
+#lyrics{
+  color:#0069ed;
+  display: inline-block;
+}
+.lyric{
+  color: rgba(255, 255, 255, 0.01);
+  font-size: 72px;
+  -webkit-background-clip:text;
+  animation-name: slideOverLyrics;
+  background-image: linear-gradient(to right, #ff9900 0%, #ff9900 0%, #0069ed 0%, #0069ed 100%);
+  animation-duration: .25s;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideOverLyrics{
+  0%{
+    background-image: linear-gradient(to right, #ff9900 0%, #ff9900 0%, #0069ed 0%, #0069ed 100%);
+  }
+  10%{
+    background-image: linear-gradient(to right, #ff9900 0%, #ff9900 10%, #0069ed 10%, #0069ed 100%);
+  }
+  20%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 20%, #0069ed 20%, #0069ed 100%);
+  }
+  30%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 30%, #0069ed 30%, #0069ed 100%);
+  }
+  40%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 40%, #0069ed 40%, #0069ed 100%);
+  }
+  50%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 50%, #0069ed 50%, #0069ed 100%);
+  }
+  60%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 60%, #0069ed 60%, #0069ed 100%);
+  }
+  70%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 70%, #0069ed 70%, #0069ed 100%);
+  }
+  80%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 80%, #0069ed 80%, #0069ed 100%);
+  }
+  90%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 90%, #0069ed 90%, #0069ed 100%);
+  }
+  100%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 100%, #0069ed 100%, #0069ed 100%);
+  }
+}
+
 @media only screen and (max-width: 600px) {
   #title{
     font-size: 15vw;

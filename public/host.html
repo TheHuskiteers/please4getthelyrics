@@ -5,44 +5,23 @@
 </head>
 <link rel="stylesheet" href="/css/host.css">
 <body>
-  <div id="joining">
-    <div class="container1">
-      <h1 id="waiting">Waiting for players to join...</h1>
-      <p>Socket countdown should go here</p>
-    </div>
-
-    <div class="container2">
-      <h2>Karaoke Room ID:</h2>
-      <p id="code">Room ID should go here</p>
-    </div>
+  <div class="container1">
+    <h1 id="waiting">Waiting for players to join...</h1>
+    <h3 id="curPlayers">Current players: 0</h3>
   </div>
 
-  <div id="playing">
-    <h1>Song # {}</h1>
-    <h2>Player {}'s turn</h2>
-
-    <div id="trackImg"></div> <!-- Image of the song's album cover goes here? -->
-
-    <h4 id="waiting">Wait for it...</h4>
-    <h3 id="singing">FORGET THOSE LYRICS!</h3>
-
-    <!-- Choose a song from the local directory of songs -->
-    <!-- Fetch the song cover image using Spotify API -->
-    <!-- Based on lyrics, a random start/end timestamp (and corresponding lyrics) are chosen -->
-    <!-- We need to make sure Spotify's audio and timestamps are synced properly -->
-    <!-- Play Spotify web player until the first timestamp, then music pauses -->
-    <!-- Prompt sent to Player x to record their voice. User's device determines if voice matches the lyrics -->
-    <!-- If so, User sends back True. Otherwise, sends back False -->
-    <!-- Server awards a point depending on correctness, and moves onto the next player/song -->
+  <div class="container2">
+    <h2>Karaoke Room ID:</h2>
+    <p id="code">Loading...</p>
   </div>
 
-
+  <button class="btn" onclick="">Start game!</button>
+  
   <script>
     if (document.cookie.indexOf('token') == -1) {
 	window.location = "http://localhost:3000/login"
     }
   </script>
-
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script>
     window.onSpotifyWebPlaybackSDKReady = () => {};
@@ -96,15 +75,26 @@
   
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
   <script type="text/javascript">
-  var socket = io();
-  function createGame() {
-    socket.emit('host join');
-    console.log("game creating");
-  }
-  socket.on('host room info', (info) => {
-      console.log(info);
-  })
-  createGame();
+    var socket = io();
+    function createGame() {
+      socket.emit('host join');
+      console.log("game creating");
+    }
+
+    // keep track of clients as they join
+    document.getElementsByClassName("btn")[0].disabled = true;
+    socket.on('host room info', (info) => {
+        console.log(info);
+        document.getElementById("code").innerHTML = info.roomId;
+        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
+        
+        if (info.clientLength == 0) {
+          document.getElementsByClassName("btn")[0].disabled = true;
+        } else {
+          document.getElementsByClassName("btn")[0].disabled = false;
+        }
+    });
+    createGame();
   </script>
 </body>
 </html>
