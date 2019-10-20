@@ -173,11 +173,8 @@
       play(fullURI, startTimestamp * 1000);
       playLyrics(lyricBox);
       setTimeout(function(){
-        socket.emit('gimme da line'); //emit 5 seconds before pause
-      }, (clipLength-5000))
-      
-      setTimeout(function(){
         pause();
+        socket.emit('gimme da line'); //emit 5 seconds before pause
       }, clipLength);
       
 
