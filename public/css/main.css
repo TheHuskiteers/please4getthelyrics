@@ -85,7 +85,7 @@ body {
     padding: 0;
     margin: 0;
     text-align: center;
-    font-family: 'sans-serif', 'Helvetica';
+    font-family: 'Open Sans', 'sans-serif', 'Helvetica';
 }
 
 #title {
@@ -103,7 +103,7 @@ body {
 
 h3 {
     color: lightgrey;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
     font-style: italic;
 }
 
@@ -142,53 +142,99 @@ h3 {
     background: #ffc420;
 }
 
+/*
 p {
     margin-bottom: 25px;
     color: grey;
     font-size: 15px;
 }
+*/
+
+hr {
+  margin: 25px 13vw 25px 13vw;
+  max-width: 800px;
+}
 
 input {
-    margin-bottom: 15px;
-    font-size: 20px;
-    border: none;
-    border-bottom: 2px solid #ff9900;
-    color: #ff9900;
-    background-color: transparent;
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  border: 2px solid #ff9900;
+  border-radius: 20px;
+  color: #ff9900;
+  background-color: transparent;
 }
 
 input::placeholder {
-  color: #ff9900;
+  color: #ffbc58;
+  text-align: center;
 }
 
 input:focus {
   outline: none;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  font-family: 'sans-serif', 'Helvetica';
+@media (max-width: 800px) {
+  #title {
+    font-size: 70px;
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+
+  #start {
+    padding: 0.7rem 1rem;
+  }
+
+  #start, #join {
+    font-size: 15px;
+  }
+
+  input {
+    padding: 7px;
+    font-size: 16px;
+  }
 }
 
 .container1 {
-  margin: 15vh 0 15vh 0;
+  margin: 15vh 0 7vh 0;
 }
 
 .container2 {
-
+  margin: 0 50px 7vh 50px;
+  padding: 8vh 0 8vh 0;
+  border: 2px dotted rgb(121, 168, 190);
+  border-radius: 10px;
 }
 
 h2 {
   color: #ff9900;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+  display: inline-block;
+  margin-bottom: 1rem;
+  border: 2px solid rgb(163, 163, 163);
+  border-radius: 5px;
+  background-color: grey;
+  text-decoration: none;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  color: white;
+  
+  padding: 5px 10px;
+}
+
+.btn:hover {
+  background-color: rgb(163, 163, 163);
 }
 
 #code {
   margin: 0 auto;
   padding: 1rem 2rem;
-  border: 2px solid #ffc420;
   border-radius: 20px;
   background-color: #ff9900;
   color: white;
