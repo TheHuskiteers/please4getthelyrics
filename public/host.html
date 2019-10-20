@@ -3,10 +3,10 @@
 <head>
   <title>Please 4get The Lyrics</title>
 </head>
-<link rel="stylesheet" href="/css/host.css">
+<link rel="stylesheet" href="/css/main.css">
 <body>
   <div class="container1">
-    <h1 id="waiting">Waiting for players to join...</h1>
+    <h1 id="waiting">Waiting for players</h1>
     <h3 id="curPlayers">Current players: 0</h3>
   </div>
 
@@ -15,62 +15,51 @@
     <p id="code">Loading...</p>
   </div>
 
+  <div id="nameGrid"></div>
+
   <button class="btn" onclick="">Start game!</button>
 
   <script>
     if (document.cookie.indexOf('token') == -1) {
 	window.location = "http://localhost:3000/login"
     }
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    var did;
   </script>
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
-  <script>
-    window.onSpotifyWebPlaybackSDKReady = () => {};
-    async function waitForSpotifyWebPlaybackSDKToLoad () {
-	return new Promise(resolve => {
-	    if (window.Spotify) {
-		resolve(window.Spotify);
-	    } else {
-		window.onSpotifyWebPlaybackSDKReady = () => {
-		    resolve(window.Spotify);
-		};
-	    }
-	});
-    };
-
-    var sdk = (async () => {
-	const { Player } = await waitForSpotifyWebPlaybackSDKToLoad();
-	const sdk = new Player({
+  <script>    
+    window.onSpotifyWebPlaybackSDKReady = () => {
+	var player = new Spotify.Player({
 	    name: "Please 4get These Lyrics",
-	    getOAuthToken: callback => { callback(document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")); }
+	    getOAuthToken: cb => { cb(token); }
 	});
-	console.log(sdk);
 
-	let connected = await sdk.connect();
-	if (connected) {
-	    fetch("https://api.spotify.com/v1/me/player", {
-		method: 'put',
-		body: JSON.stringify({ device_ids: [sdk.id] }),
-		headers: {
-		    'Content-Type': 'application/json',
-		    'Authorization': 'Bearer ' + sdk._options.id,
-		}
-	    })
-	}
-	return sdk
-    })();
-
+	player.addListener('ready', ({ device_id }) => {
+	    did = device_id;
+	});
+	
+	player.connect();
+    };
+    
     const play = (uri, pos) => {
-	var o = (async () => (await sdk)._options)();
-	console.log(o);
-	fetch('https://api.spotify.com/v1/me/player/play?device_id=' + o.id, {
+	fetch('https://api.spotify.com/v1/me/player/play?device_id=' + did, {
 	    method: 'put',
-	    body: JSON.stringify({ uris: [uri], position_ms: pos }),
+	    body: uri ? JSON.stringify({ uris: [uri], position_ms: pos }) : '',
 	    headers: {
 		'Content-Type': 'application/json',
-		'Authorization': 'Bearer ' + o.getOAuthToken
+		'Authorization': 'Bearer ' + token
 	    }
-	});
-    };
+	}).then(res => console.log(res));
+    }
+
+    const pause = () => {
+	fetch('https://api.spotify.com/v1/me/player/pause?device_id' + did, {
+	    method: 'put',
+	    headers: {
+		'Authorization': 'Bearer ' + token
+	    }
+	}).then(res => console.log(res));
+    }
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
@@ -78,16 +67,28 @@
     var socket = io();
     function createGame() {
       socket.emit('host join');
-      console.log("game creating");
     }
 
     // keep track of clients as they join
+    var clientAliases = []
     document.getElementsByClassName("btn")[0].disabled = true;
     socket.on('create game success', (info) => {
         console.log(info);
         document.getElementById("code").innerHTML = info.roomId;
-        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clients.length;
+        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
+        if (info.newAlias != undefined) {
+          clientAliases.push(info.newAlias);
+          var newDiv = document.createElement("div");
+          var newAlias = document.createTextNode(info.newAlias); 
+          newDiv.appendChild(newAlias)
 
+          var gridDiv = document.getElementById("nameGrid"); 
+          gridDiv.appendChild(newDiv);
+        } else if (info.removeAlias != undefined) {
+          clientAliases = clientAliases.filter(e => e !== info.removeAlias);
+        }
+
+        
         if (info.clientLength == 0) {
           document.getElementsByClassName("btn")[0].disabled = true;
         } else {

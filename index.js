@@ -171,8 +171,10 @@ io.on('connection', (socket) => {
       delete rooms[socket.roomId]
       // TODO: have clients timeout when room deleted
     } else if (socket.room) {
-      // if socket is host, remove from clients array, then update host
+      // if socket isn't host, remove from clients array, then update host
+      const alias = socket.alias
       socket.room.clients = socket.room.clients.filter((obj) => { return obj.id !== socket.id })
+      socket.room.host.emit('host room info', { roomId: socket.roomId, clientLength: socket.room.clients.length, removeAlias: alias })
       socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients()});
     }
   })
@@ -217,6 +219,7 @@ app.post('/connect-to-room', (req, res) => {
   console.log(req.body.roomNum)
   if (rooms[req.body.roomNum] !== undefined) {
     res.cookie('roomNum', req.body.roomNum)
+    res.cookie('alias', req.body.alias)
     res.redirect('/client.html')
   }
   // not easy to return error msg to form submit
