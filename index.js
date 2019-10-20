@@ -24,9 +24,11 @@ var ID = function () {
 }
 
 var rooms = {}
-function Room (host, clients) {
+function Room (host, clients, roomSize) {
   this.host = host
   this.clients = clients || []
+  this.open = true;
+  this.roomSize = roomSize;
 }
 
 io.on('connection', (socket) => {
@@ -41,18 +43,31 @@ io.on('connection', (socket) => {
     socket.roomId = roomId
     rooms[roomId] = new Room(socket)
     socket.room = rooms[roomId]
-    socket.emit('host room info', { roomId: roomId, clientLength: socket.room.clients.length })
+    socket.emit('create game success', { roomId: roomId, clientLength: socket.room.clients.length })
     console.log('Host ' + socket.id + ' has joined and created room ' + roomId)
   })
 
+  socket.on('game start', () => {
+    socket.room.open = false;
+    // TODO: Acually start game. Fetch song data, pick song,
+  })
+
   // handle client joining
-  socket.on('client join', (roomId) => {
-    socket.host = false
-    socket.roomId = roomId
-    socket.room = rooms[roomId]
-    rooms[roomId].clients.push(socket)
-    socket.room.host.emit('host room info', { roomId: roomId, clientLength: socket.room.clients.length })
-    console.log('Client ' + socket.id + ' has joined!')
+  socket.on('client join', (roomId, username) => {
+    if(rooms[roomId] && rooms[roomId].open){
+      socket.username = username
+      socket.host = false
+      socket.roomId = roomId
+      socket.room = rooms[roomId]
+      rooms[roomId].clients.push(socket)
+      socket.room.host.emit('update pregame info', { roomId: roomId, clientLength: socket.room.clients.length })
+      socket.emit('client join success');
+      console.log('Client ' + socket.id + ' has joined room '+ roomId);
+    } else {
+      socket.emit("client join faliure");
+      console.log('Client ' + socket.id + ' failed to join room '+ roomId);
+    }
+
   })
 
   socket.on('disconnect', (reason) => {
