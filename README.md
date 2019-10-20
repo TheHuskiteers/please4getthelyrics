@@ -15,4 +15,4 @@ The application programs reside on a remote server and that are delivered to pla
 ##How to use:
 You can either use the QR code below or download the repo and run it in a web browser on any device.
 
-<img src="public/pictures/qr-code.png" alt="QR" width="50px" height="50px">
+<img src="public/pictures/qr-code.png" alt="QR" width="150px" height="150px" text-align="center">
