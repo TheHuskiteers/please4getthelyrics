@@ -6,12 +6,26 @@ var io = require('socket.io')(server)
 var SpotifyWebApi = require('spotify-web-api-node')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
+var fs = require('fs')
 
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, '/public')))
 
 const port = 3000
+
+var jsonLyricFiles = []
+//Read JSON karaoke Files.
+files = fs.readdirSync("./public/karson/")
+files.forEach((fileName) =>{
+  if(fileName.includes('.json')){
+    file = fs.readFileSync("./public/karson/" + fileName, 'utf-8');
+    jsonLyricFiles.push({
+      spotifyURI: fileName.split('.json')[0],
+      lyricData: JSON.parse(file)
+    });
+  }
+})
 
 server.listen(port, () => console.log('Server listening on port ' + port))
 // Room id creator
@@ -21,6 +35,62 @@ var ID = function () {
   // after the decimal.
   return Math.random().toString(36).substr(2, 4)
 }
+
+function shuffle(b) { //Shuffles lists, pass by value (WORKS)
+  a = b.slice(0)
+  for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function processRoundData(lyricData){
+  //TODO: Game difficulty: prioritize chorus for easy, verse 1 for normal, verse 2 for hard.
+  //Pick a section fully randomly
+  let musicSection = shuffle(lyricData)[0]
+  //Pick a \\, keep adding until the next \\.
+  let newLineCoupleIndicies = []
+  for(let i = 0; i < musicSection.length; i++){
+    if(musicSection[i].lyric == '\\'){
+      newLineCoupleIndicies.push(i);
+    }
+  }
+  newLineCoupleIndicies.pop()
+  let startingIndex = shuffle(newLineCoupleIndicies)[0];
+  let finalLineCouple = []
+  let newLineIndicies = []
+  let onSecondCouple = false
+  for(let i = startingIndex + 1; i < musicSection.length && !(musicSection[i].lyric == "\\") ; i++){
+    console.log("Line: " + musicSection[i].lyric )
+    if(musicSection[i].lyric == '/'){
+      newLineIndicies.push(i - startingIndex);
+    }
+    finalLineCouple.push(musicSection[i])
+  }
+  console.log(newLineIndicies);
+  //Now, extract a missing line.
+  let lastLineIndex = newLineIndicies.pop();
+  let visibleLines = finalLineCouple.slice(0)
+  let hiddenLines = []
+  let answerString = '' 
+  for(let i = lastLineIndex + 1; i < finalLineCouple.length; i++){
+    answerString += finalLineCouple[i].lyric
+    hiddenLines.push(finalLineCouple[i])
+    visibleLines[i] = {
+      timestamp: -1,
+      lyric: '__'
+    }
+  }
+  //TODO: Pick half the line.
+  return {
+    finalLineCouple: finalLineCouple,
+    visibleLines: visibleLines,
+    hidddenLines: hiddenLines,
+    answer: answerString
+  }
+}
+console.log(JSON.stringify(processRoundData(jsonLyricFiles[6].lyricData)))
 
 var rooms = {}
 function Room (host, clients, roomSize) {
@@ -37,6 +107,8 @@ function Room (host, clients, roomSize) {
   }
   this.open = true;
   this.roomSize = roomSize;
+  this.songOrder = shuffle(jsonLyricFiles);
+
 }
 
 io.on('connection', (socket) => {
@@ -64,9 +136,12 @@ io.on('connection', (socket) => {
   })
 
   socket.on('gimme da line', () => {
-//    socket.room.clients[/*current player*/].emit('gimme da line');
+    // socket.room.clients[/*current player*/].emit('gimme da line');
   })
 
+  socket.on('new round', () =>{
+    
+  })
 
 
   // handle client joining
