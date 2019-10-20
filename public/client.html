@@ -71,7 +71,6 @@
 
     //It is now your turn, play
     socket.on('gimme da line', () => {
-      console.log("triggered");
       document.getElementById("scorespan").display = "block";
       document.getElementById("load").innerHTML = "Sing!"
       document.getElementById("load").className = document.getElementById("load").className.replace('',/\bloading\b/);
@@ -101,11 +100,12 @@
           document.documentElement.style.setProperty('--key-color', '#e6e6e6');
           document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
           recognition.stop();
-          results();
+          //we need to record the voice, take transcription and put it to variable
+          var transcription = document.getElementById("words").innerHTML;
+          console.log(transcription);
+          socket.emit('client result', transcription);
       }
-      //we need to record the voice, take transcription and put it to variable
-      var transcription = document.getElementById("words").innerHTML;
-      socket.emit('line results', transcription);
+
     })
   </script>
   </body>

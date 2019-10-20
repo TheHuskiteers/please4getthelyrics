@@ -48,7 +48,7 @@ function shuffle (b) { // Shuffles lists, pass by value (WORKS)
 function processRoundData (lyricData) {
   // TODO: Game difficulty: prioritize chorus for easy, verse 1 for normal, verse 2 for hard.
   // Pick a section fully randomly
-  console.log(lyricData[0][2].lyric)
+  //console.log(lyricData[0][2].lyric)
   const musicSection = shuffle(lyricData)[0]
   // console.log(JSON.stringify(musicSection))
   // Pick a \\, keep adding until the next \\.
@@ -62,17 +62,17 @@ function processRoundData (lyricData) {
     newLineCoupleIndicies.pop()
   }
   const startingIndex = shuffle(newLineCoupleIndicies)[0]
-  console.log("starting Index: ",startingIndex)
+  //console.log("starting Index: ",startingIndex)
   const finalLineCouple = []
   const newLineIndicies = []
   for (let i = startingIndex + 1; i < musicSection.length && !(musicSection[i].lyric == '\\'); i++) {
-    console.log('Line: ' + musicSection[i].lyric)
+    //console.log('Line: ' + musicSection[i].lyric)
     if (musicSection[i].lyric == '/') {
       newLineIndicies.push(i - startingIndex)
     }
     finalLineCouple.push(musicSection[i])
   }
-  console.log(newLineIndicies)
+  //console.log(newLineIndicies)
   // Now, extract a missing line.
   const lastLineIndex = newLineIndicies.pop()
   const visibleLines = finalLineCouple.slice(0)
@@ -191,6 +191,7 @@ io.on('connection', (socket) => {
 
   socket.on('client result', (transcription) => {
     //collect character frequency of each letter, compare to character frequency of answer
+    console.log("we have client results");
     function getFrequency(string) {
     var freq = {};
     for (var i=0; i<string.length;i++) {
