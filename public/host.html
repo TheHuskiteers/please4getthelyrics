@@ -86,6 +86,7 @@
   }
   socket.on('host room info', (info) => {
       console.log(info);
+      document.getElementById("code").innerHTML = info.roomId;
   })
   createGame();
   </script>
