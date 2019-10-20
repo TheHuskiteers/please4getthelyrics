@@ -18,11 +18,12 @@ function inputJSONLyrics(lyricBox,JSONClip){
   let prevSylBlock = false;
   let syl;
   for(syl of JSONClip){
-    if(syl.lyric =='\\' && currentLine == false){ //If the first slashes, add the paragraph.
+    if(currentLine == false){ //If the first slashes, add the paragraph.
       currentLine = document.createElement("P")
       lyricBox.appendChild(currentLine)
       currentLine.classList.add("lyricLine");
-    } else if(syl.lyric == "/"){ // Start the next Line.
+    }
+    if(syl.lyric == "/"){ // Start the next Line.
       currentLine = document.createElement("P");
       lyricBox.appendChild(currentLine)
       currentLine.classList.add("lyricLine");

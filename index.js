@@ -86,11 +86,11 @@ function processRoundData(lyricData){
   return {
     finalLineCouple: finalLineCouple,
     visibleLines: visibleLines,
-    hidddenLines: hiddenLines,
+    hiddenLines: hiddenLines,
     answer: answerString
   }
 }
-console.log(JSON.stringify(processRoundData(jsonLyricFiles[6].lyricData)))
+// console.log(JSON.stringify(processRoundData(jsonLyricFiles[6].lyricData)))
 
 var rooms = {}
 function Room (host) {

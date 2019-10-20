@@ -151,11 +151,12 @@
     })
     socket.on('game info', (info) => {
       //take the info created from processRoundData and spotify URI, put it on screen
+      console.log(info)
       let songURI = info.SpotifyURI;
       let roundLineData = info.roundLineData
-      let visibleLines = roundlineData.visibleLines //First display
+      let visibleLines = roundLineData.visibleLines //First display
       let startTimestamp = visibleLines[0].timestamp
-      let firstHiddenTimestamp = roundLineData.hiddenTimes[0].timestamp
+      let firstHiddenTimestamp = roundLineData.hiddenLines[0].timestamp
       
       inputJSONLyrics(lyricBox,visibleLines)
 
