@@ -48,6 +48,7 @@ function shuffle (b) { // Shuffles lists, pass by value (WORKS)
 function processRoundData (lyricData) {
   // TODO: Game difficulty: prioritize chorus for easy, verse 1 for normal, verse 2 for hard.
   // Pick a section fully randomly
+  console.log(lyricData[0][2].lyric)
   const musicSection = shuffle(lyricData)[0]
   // Pick a \\, keep adding until the next \\.
   const newLineCoupleIndicies = []
@@ -90,7 +91,14 @@ function processRoundData (lyricData) {
     answer: answerString
   }
 }
+// console.log(JSON.stringify(processRoundData(jsonLyricFiles[0].lyricData)))
+// console.log(JSON.stringify(processRoundData(jsonLyricFiles[1].lyricData)))
+console.log(JSON.stringify(processRoundData(jsonLyricFiles[2].lyricData)))
+console.log(JSON.stringify(processRoundData(jsonLyricFiles[3].lyricData)))
+// console.log(JSON.stringify(processRoundData(jsonLyricFiles[4].lyricData)))
+// console.log(JSON.stringify(processRoundData(jsonLyricFiles[5].lyricData)))
 // console.log(JSON.stringify(processRoundData(jsonLyricFiles[6].lyricData)))
+// console.log(JSON.stringify(processRoundData(jsonLyricFiles[7].lyricData)))
 
 var rooms = {}
 function Room (host) {
