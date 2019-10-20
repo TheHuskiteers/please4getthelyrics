@@ -183,6 +183,7 @@ io.on('connection', (socket) => {
       socket.emit('client join success')
       console.log('Client ' + socket.id + ' has joined room ' + roomId)
     } else {
+      // app.redirect("/");
       socket.emit('client join failure')
       console.log('Client tried to connect with ' + roomId + alias)
       console.log('Unfortunately, ' + rooms[roomId])
@@ -281,6 +282,9 @@ app.post('/connect-to-room', (req, res) => {
     res.cookie('roomNum', req.body.roomNum)
     res.cookie('alias', req.body.alias)
     res.redirect('/client.html')
+  } else {
+    console.log("room doesnt exist");
+    res.redirect('/');
   }
   // not easy to return error msg to form submit
   // so just do nothing if roomId DNE
