@@ -63,6 +63,7 @@ margin-right:auto;
 border-radius: 100%;
 background: transparent;
 animation-name: pulse;
+animation-play-state: running;
 animation-duration: .5s;
 animation-iteration-count: infinite;
 animation-direction: alternate;
