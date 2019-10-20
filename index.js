@@ -26,6 +26,15 @@ var rooms = {}
 function Room (host, clients, roomSize) {
   this.host = host
   this.clients = clients || []
+  this.getClients = function () {
+    var client_data = this.clients.map((client) => {
+      return {
+        username: client.username,
+        id: client.id
+      }
+    })
+    return client_data;
+  }
   this.open = true;
   this.roomSize = roomSize;
 }
@@ -42,7 +51,7 @@ io.on('connection', (socket) => {
     socket.roomId = roomId
     rooms[roomId] = new Room(socket)
     socket.room = rooms[roomId]
-    socket.emit('create game success', { roomId: roomId, clientLength: socket.room.clients.length })
+    socket.emit('create game success', { roomId: roomId, clients: socket.room.getClients()})
     console.log('Host ' + socket.id + ' has joined and created room ' + roomId)
   })
 
@@ -59,7 +68,7 @@ io.on('connection', (socket) => {
       socket.roomId = roomId
       socket.room = rooms[roomId]
       rooms[roomId].clients.push(socket)
-      socket.room.host.emit('update pregame info', { roomId: roomId, clientLength: socket.room.clients.length })
+      socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients()});
       socket.emit('client join success');
       console.log('Client ' + socket.id + ' has joined room '+ roomId);
     } else {
@@ -79,7 +88,7 @@ io.on('connection', (socket) => {
     } else if (socket.room) {
       // if socket is host, remove from clients array, then update host
       socket.room.clients = socket.room.clients.filter((obj) => { return obj.id !== socket.id })
-      socket.room.host.emit('host room info', { roomId: socket.roomId, clientLength: socket.room.clients.length })
+      socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients()});
     }
   })
 })
