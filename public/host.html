@@ -8,13 +8,15 @@
   <div id="joining">
     <div class="container1">
       <h1 id="waiting">Waiting for players to join...</h1>
-      <p>Socket countdown should go here</p>
+      <h3 id="curPlayers">Current players: 0</h3>
     </div>
 
     <div class="container2">
       <h2>Karaoke Room ID:</h2>
-      <p id="code">Room ID should go here</p>
+      <p id="code">Loading...</p>
     </div>
+
+    <button class="btn">Start game!</button>
   </div>
 
   <div id="playing">
@@ -35,9 +37,6 @@
     <!-- If so, User sends back True. Otherwise, sends back False -->
     <!-- Server awards a point depending on correctness, and moves onto the next player/song -->
   </div>
-
-
-
 
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script>
@@ -83,11 +82,15 @@
       socket.emit('host join');
       console.log("game creating");
     }
+
+    // keep track of clients as they join
     socket.on('host room info', (info) => {
         console.log(info);
         document.getElementById("code").innerHTML = info.roomId;
+        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
     })
     createGame();
+
   </script>
 </body>
 </html>

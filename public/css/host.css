@@ -6,11 +6,34 @@ body {
 }
 
 .container1 {
-    margin: 15vh 0 15vh 0;
+    margin: 15vh 0 7vh 0;
 }
 
 .container2 {
+    margin: 0 50px 7vh 50px;
+    padding: 8vh 0 8vh 0;
+    border: 2px dotted rgb(121, 168, 190);
+    border-radius: 10px;
+    background-color: rgb(205, 226, 240);
+}
 
+.btn {
+    display: inline-block;
+    margin-bottom: 1rem;
+    border: 2px solid rgb(163, 163, 163);
+    border-radius: 5px;
+    background-color: grey;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    
+    padding: 5px 10px;
+}
+
+.btn:hover {
+    background-color: rgb(163, 163, 163);
 }
 
 h2 {
@@ -20,7 +43,6 @@ h2 {
 #code {
     margin: 0 auto;
     padding: 1rem 2rem;
-    border: 2px solid #ffc420;
     border-radius: 20px;
     background-color: #ff9900;
     color: white;
