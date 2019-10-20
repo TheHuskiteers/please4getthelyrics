@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html>
+	<script>
+		if (window.location.hostname !== 'localhost' &&  location.protocol !== 'https:')
+				{
+				location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+				}
+</script>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Please 4get the Lyrics</title>
