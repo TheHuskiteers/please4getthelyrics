@@ -6,82 +6,79 @@
 FOR USE WITH THE gameSpace html.
 */
 
+const lyricBox = document.getElementById('lyrics')
 
-
-let lyricBox = document.getElementById("lyrics");
-
-function inputJSONLyrics(lyricBox,JSONClip){
-  let initialTime = JSONClip[0].timestamp
-  let currentLine = false;
-  let currentBox = false;
-  let prevSyl = false;
-  let prevSylBlock = false;
-  let syl;
-  for(syl of JSONClip){
-    if(currentLine == false){ //If the first slashes, add the paragraph.
-      currentLine = document.createElement("P")
+function inputJSONLyrics (lyricBox, JSONClip) {
+  const initialTime = JSONClip[0].timestamp
+  let currentLine = false
+  const currentBox = false
+  let prevSyl = false
+  let prevSylBlock = false
+  let syl
+  for (syl of JSONClip) {
+    if (currentLine == false) { // If the first slashes, add the paragraph.
+      currentLine = document.createElement('P')
       lyricBox.appendChild(currentLine)
-      currentLine.classList.add("lyricLine");
+      currentLine.classList.add('lyricLine')
     }
-    if(syl.lyric == "/"){ // Start the next Line.
-      currentLine = document.createElement("P");
+    if (syl.lyric == '/') { // Start the next Line.
+      currentLine = document.createElement('P')
       lyricBox.appendChild(currentLine)
-      currentLine.classList.add("lyricLine");
-    } else if(syl.lyric == '\\'){
-      break;
-    } else if(syl.lyric == '_'){
-      currentSylBlock = document.createElement("SPAN")
+      currentLine.classList.add('lyricLine')
+    } else if (syl.lyric == '\\') {
+      break
+    } else if (syl.lyric == '_') {
+      currentSylBlock = document.createElement('SPAN')
       currentLine.appendChild(currentSylBlock)
-      currentSylBlock.classList.add("mysteryLyric");
-    }else{
-      currentSylBlock = document.createElement("SPAN")
+      currentSylBlock.classList.add('mysteryLyric')
+    } else {
+      currentSylBlock = document.createElement('SPAN')
       currentLine.appendChild(currentSylBlock)
-      currentSylBlock.classList.add("lyric");
-      currentSylBlock.innerHTML = syl.lyric;
-      currentSylBlock.style.animationPlayState = "paused";
-      currentSylBlock.style.animationDelay = (syl.timestamp - initialTime) + 's';
-      if(prevSyl){
-        prevSylBlock.style.animationDuration = syl.timestamp - prevSyl.timestamp  + 's';
+      currentSylBlock.classList.add('lyric')
+      currentSylBlock.innerHTML = syl.lyric
+      currentSylBlock.style.animationPlayState = 'paused'
+      currentSylBlock.style.animationDelay = (syl.timestamp - initialTime) + 's'
+      if (prevSyl) {
+        prevSylBlock.style.animationDuration = syl.timestamp - prevSyl.timestamp + 's'
       }
       prevSyl = syl
       prevSylBlock = currentSylBlock
     }
-     //Assume its a syllable.
+    // Assume its a syllable.
   }
 }
 
-function playLyrics(lyricBox){
+function playLyrics (lyricBox) {
   spans = lyricBox.getElementsByClassName('lyric')
   console.log(spans)
-  for(syl of spans){
-    syl.style.animationPlayState = "running";
+  for (syl of spans) {
+    syl.style.animationPlayState = 'running'
   }
 }
 
-function emptyLyrics(lyricBox){
-  lyricBox.innerHTML = '';
+function emptyLyrics (lyricBox) {
+  lyricBox.innerHTML = ''
 }
 
-function getRoundLyrics(lyricData){
-  //TODO: Game difficulty: prioritize chorus for easy, verse 1 for normal, verse 2 for hard.
-  //Pick a section fully randomly
-  let musicSection = shuffle(lyricData)[0]
-  //Pick a \\, keep adding until the next \\.
-  let newSectionIndicies = []
-  for(i in musicSection){
-    if(musicSection[i].lyric == '\\' || i <= musicSection.length - 5){
-      newSectionIndicies.push(i);
+function getRoundLyrics (lyricData) {
+  // TODO: Game difficulty: prioritize chorus for easy, verse 1 for normal, verse 2 for hard.
+  // Pick a section fully randomly
+  const musicSection = shuffle(lyricData)[0]
+  // Pick a \\, keep adding until the next \\.
+  const newSectionIndicies = []
+  for (i in musicSection) {
+    if (musicSection[i].lyric == '\\' || i <= musicSection.length - 5) {
+      newSectionIndicies.push(i)
     }
   }
-  let startingIndex = shuffle(newSectionIndicies)[0];
-  let finalSection = []
-  for(let i = startingIndex; i < length(musicSection) || musicSection[i].lyric != '\\'; i++){
+  const startingIndex = shuffle(newSectionIndicies)[0]
+  const finalSection = []
+  for (let i = startingIndex; i < length(musicSection) || musicSection[i].lyric != '\\'; i++) {
     finalSection.push(musicSection[i])
   }
-  
+
   return finalSection
 }
-
 
 // let exampleJSONClip = [ { timestamp: 84.19178010391235, lyric: '\\' },
 // { timestamp: 84.19179010391235, lyric: 'It\'s' },

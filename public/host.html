@@ -55,12 +55,21 @@
 	});
 
 	player.addListener('ready', ({ device_id }) => {
-	    did = device_id;
-	});
+	  did = device_id;
 
+	  fetch('https://api.spotify.com/v1/me/player', {
+	    method: 'put',
+	    body: JSON.stringify({ device_ids: [did], play: false }),
+	    headers: {
+	      'Content-Type': 'application/json',
+	      'Authorization': 'Bearer ' + token
+	    }
+	  }).then(res => console.log(res));	  
+	});
+      
 	player.connect();
     };
-
+   
     const play = (uri, pos) => {
 	fetch('https://api.spotify.com/v1/me/player/play?device_id=' + did, {
 	    method: 'put',

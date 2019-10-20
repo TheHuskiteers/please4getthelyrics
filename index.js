@@ -15,15 +15,15 @@ app.use(express.static(path.join(__dirname, '/public')))
 const port = 3000
 
 var jsonLyricFiles = []
-//Read JSON karaoke Files.
-files = fs.readdirSync("./public/karson/")
-files.forEach((fileName) =>{
-  if(fileName.includes('.json')){
-    file = fs.readFileSync("./public/karson/" + fileName, 'utf-8');
+// Read JSON karaoke Files.
+files = fs.readdirSync('./public/karson/')
+files.forEach((fileName) => {
+  if (fileName.includes('.json')) {
+    file = fs.readFileSync('./public/karson/' + fileName, 'utf-8')
     jsonLyricFiles.push({
       spotifyURI: fileName.split('.json')[0],
       lyricData: JSON.parse(file)
-    });
+    })
   }
 })
 
@@ -36,45 +36,45 @@ var ID = function () {
   return Math.random().toString(36).substr(2, 4)
 }
 
-function shuffle(b) { //Shuffles lists, pass by value (WORKS)
+function shuffle (b) { // Shuffles lists, pass by value (WORKS)
   a = b.slice(0)
   for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
   }
-  return a;
+  return a
 }
 
-function processRoundData(lyricData){
-  //TODO: Game difficulty: prioritize chorus for easy, verse 1 for normal, verse 2 for hard.
-  //Pick a section fully randomly
-  let musicSection = shuffle(lyricData)[0]
-  //Pick a \\, keep adding until the next \\.
-  let newLineCoupleIndicies = []
-  for(let i = 0; i < musicSection.length; i++){
-    if(musicSection[i].lyric == '\\'){
-      newLineCoupleIndicies.push(i);
+function processRoundData (lyricData) {
+  // TODO: Game difficulty: prioritize chorus for easy, verse 1 for normal, verse 2 for hard.
+  // Pick a section fully randomly
+  const musicSection = shuffle(lyricData)[0]
+  // Pick a \\, keep adding until the next \\.
+  const newLineCoupleIndicies = []
+  for (let i = 0; i < musicSection.length; i++) {
+    if (musicSection[i].lyric == '\\') {
+      newLineCoupleIndicies.push(i)
     }
   }
   newLineCoupleIndicies.pop()
-  let startingIndex = shuffle(newLineCoupleIndicies)[0];
-  let finalLineCouple = []
-  let newLineIndicies = []
-  let onSecondCouple = false
-  for(let i = startingIndex + 1; i < musicSection.length && !(musicSection[i].lyric == "\\") ; i++){
-    console.log("Line: " + musicSection[i].lyric )
-    if(musicSection[i].lyric == '/'){
-      newLineIndicies.push(i - startingIndex);
+  const startingIndex = shuffle(newLineCoupleIndicies)[0]
+  const finalLineCouple = []
+  const newLineIndicies = []
+  const onSecondCouple = false
+  for (let i = startingIndex + 1; i < musicSection.length && !(musicSection[i].lyric == '\\'); i++) {
+    console.log('Line: ' + musicSection[i].lyric)
+    if (musicSection[i].lyric == '/') {
+      newLineIndicies.push(i - startingIndex)
     }
     finalLineCouple.push(musicSection[i])
   }
-  console.log(newLineIndicies);
-  //Now, extract a missing line.
-  let lastLineIndex = newLineIndicies.pop();
-  let visibleLines = finalLineCouple.slice(0)
-  let hiddenLines = []
+  console.log(newLineIndicies)
+  // Now, extract a missing line.
+  const lastLineIndex = newLineIndicies.pop()
+  const visibleLines = finalLineCouple.slice(0)
+  const hiddenLines = []
   let answerString = ''
-  for(let i = lastLineIndex + 1; i < finalLineCouple.length; i++){
+  for (let i = lastLineIndex + 1; i < finalLineCouple.length; i++) {
     answerString += finalLineCouple[i].lyric
     hiddenLines.push(finalLineCouple[i])
     visibleLines[i] = {
@@ -82,7 +82,7 @@ function processRoundData(lyricData){
       lyric: '__'
     }
   }
-  //TODO: Pick half the line.
+  // TODO: Pick half the line.
   return {
     finalLineCouple: finalLineCouple,
     visibleLines: visibleLines,
@@ -96,8 +96,8 @@ var rooms = {}
 function Room (host) {
   this.host = host
   this.clients = []
-  this.roomSize = 0;
-  this.open = true;
+  this.roomSize = 0
+  this.open = true
   this.getClients = function () {
     var client_data = this.clients.map((client) => {
       return {
@@ -105,11 +105,10 @@ function Room (host) {
         id: client.id
       }
     })
-    return client_data;
+    return client_data
   }
-  this.open = true;
-  this.songOrder = shuffle(jsonLyricFiles);
-
+  this.open = true
+  this.songOrder = shuffle(jsonLyricFiles)
 }
 
 io.on('connection', (socket) => {
@@ -122,18 +121,18 @@ io.on('connection', (socket) => {
     socket.roomId = roomId
     rooms[roomId] = new Room(socket)
     socket.room = rooms[roomId]
-    socket.emit('create game success', { roomId: roomId, clients: socket.room.getClients()})
+    socket.emit('create game success', { roomId: roomId, clients: socket.room.getClients() })
     console.log('Host ' + socket.id + ' has joined and created room ' + roomId)
   })
 
   socket.on('game start', () => {
-    socket.room.open = false;
+    socket.room.open = false
 
     // TODO: Acually start game. Fetch song data, pick song,
-    var gameInfo = {};
+    var gameInfo = {}
     socket.emit('game init', gameInfo)
-    for(client of socket.room.clients){
-      client.emit('game start');
+    for (client of socket.room.clients) {
+      client.emit('game start')
     }
   })
 
@@ -141,53 +140,51 @@ io.on('connection', (socket) => {
     // socket.room.clients[/*current player*/].emit('gimme da line');
   })
 
-  socket.on('new round', () =>{
-    let nextSong = socket.room.songOrder.pop()
-    let spotifyURI = nextSong.spotifyURI
+  socket.on('new round', () => {
+    const nextSong = socket.room.songOrder.pop()
+    const spotifyURI = nextSong.spotifyURI
     socket.room.roundLineData = processRoundData(nextSong.lyricData)
-    socket.emit('game info', {spotifyURI: spotifyURI, roundLineData: socket.room.roundLineData});
+    socket.emit('game info', { spotifyURI: spotifyURI, roundLineData: socket.room.roundLineData })
   })
-
 
   // handle client joining
   socket.on('client join', (roomId, alias) => {
-    console.log("Yay for " + roomId + alias);
-    if(rooms[roomId] && rooms[roomId].open){
+    console.log('Yay for ' + roomId + alias)
+    if (rooms[roomId] && rooms[roomId].open) {
       socket.alias = alias
       socket.host = false
       socket.roomId = roomId
       socket.room = rooms[roomId]
       rooms[roomId].clients.push(socket)
-      socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients() });
-      socket.emit('client join success');
-      console.log('Client ' + socket.id + ' has joined room '+ roomId);
+      socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients() })
+      socket.emit('client join success')
+      console.log('Client ' + socket.id + ' has joined room ' + roomId)
     } else {
-      socket.emit("client join faliure");
-      console.log("Client tried to connect with " + roomId + alias);
-      console.log("Unfortunately, " + rooms[roomId]);
-      console.log("and " + rooms[roomId].open);
-      console.log('Client ' + socket.id + ' failed to join room '+ roomId);
+      socket.emit('client join faliure')
+      console.log('Client tried to connect with ' + roomId + alias)
+      console.log('Unfortunately, ' + rooms[roomId])
+      console.log('and ' + rooms[roomId].open)
+      console.log('Client ' + socket.id + ' failed to join room ' + roomId)
     }
-
   })
 
   socket.on('client result', (transcription) => {
     // TODO: verify transcription, attribute points accordingly
-    let correct = socket.room.roundLineData.answer == transcription; //// TODO: make this more merciful
+    const correct = socket.room.roundLineData.answer == transcription /// / TODO: make this more merciful
     results = {
       transcription: transcription,
-      correct: correct,
+      correct: correct
 
     }
     socket.room.host.emit('round results', results)
   })
 
-  //handle disconnect
+  // handle disconnect
   socket.on('disconnect', (reason) => {
     console.log((socket.host) ? 'Host ' + socket.id + " has left, because of '" + reason + "'." : 'Client ' + socket.id + " has left, because of '" + reason + "'.")
 
     // delete room
-    
+
     if (socket.host) {
       delete rooms[socket.roomId]
       // TODO: have clients timeout when room deleted
@@ -195,7 +192,7 @@ io.on('connection', (socket) => {
       // if socket isn't host, remove from clients array, then update host
       const alias = socket.alias
       socket.room.clients = socket.room.clients.filter((obj) => { return obj.id !== socket.id })
-      socket.room.host.emit('update pregame info', { roomId: socket.host, clients: socket.room.getClients() });
+      socket.room.host.emit('update pregame info', { roomId: socket.host, clients: socket.room.getClients() })
     }
   })
 })
