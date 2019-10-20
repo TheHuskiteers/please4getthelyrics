@@ -217,7 +217,7 @@ io.on('connection', (socket) => {
     }
     console.log("diff = " + diff);
 
-    var correct = diff < 10; /// / TODO: make this more merciful
+    var correct = diff < 10 && transcription.length > 0;
     results = {
       transcription: transcription,
       correct: correct,
@@ -254,15 +254,6 @@ const scopes = ['streaming', 'user-modify-playback-state']
 
 app.get('/', (req, res) => {
   res.redirect('/game.html')
-})
-
-app.get('/join/:id', (req, res) => {
-  // Socket logic to join room goes here
-})
-
-app.get('/togglePlay', (req, res) => {
-  // Toggle state of current song
-  // Get room # from request
 })
 
 app.get('/login', (req, res) => {
