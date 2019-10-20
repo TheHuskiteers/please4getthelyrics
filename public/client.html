@@ -101,11 +101,11 @@
           document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
           recognition.stop();
           //we need to record the voice, take transcription and put it to variable
-          var transcription = document.getElementById("words").innerHTML;
           setTimeout(function () {
+            var transcription = document.getElementById("words").innerHTML;
             console.log(transcription);
             socket.emit('client result', transcription);
-          }, 1500)
+          }, 1000)
       }
 
     })
