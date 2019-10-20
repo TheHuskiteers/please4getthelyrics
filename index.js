@@ -139,7 +139,13 @@ io.on('connection', (socket) => {
   })
 
   socket.on('new round', () =>{
+<<<<<<< HEAD
     // do nothing
+=======
+    let nextSong = socket.room.songOrder.pop()
+    let spotifyURI = nextSong.spotifyURI
+    let roundLineData = processRoundData(nextSong.lyricData)
+>>>>>>> c5e9c5c5d35dc786a93e29ec928f2aff25b9363b
   })
 
 

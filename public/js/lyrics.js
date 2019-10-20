@@ -221,8 +221,8 @@ function getRoundLyrics(lyricData){
   return finalSection
 }
 
-// inputJSONLyrics(lyricBox,exampleJSONClip2);
-// playLyrics(lyricBox);
+inputJSONLyrics(lyricBox,exampleJSONClip2);
+playLyrics(lyricBox);
 // textFiles = document.getElementsByClassName("lyric");
 // for(let i = 0; i < textFiles.length; i++){
 //   textFiles[i].style.animationDelay = (i * .25) + "s";
