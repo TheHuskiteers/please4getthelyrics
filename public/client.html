@@ -102,8 +102,10 @@
           recognition.stop();
           //we need to record the voice, take transcription and put it to variable
           var transcription = document.getElementById("words").innerHTML;
-          console.log(transcription);
-          socket.emit('client result', transcription);
+          setTimeout(function () {
+            console.log(transcription);
+            socket.emit('client result', transcription);
+          }, 1500)
       }
 
     })

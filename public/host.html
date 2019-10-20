@@ -29,7 +29,7 @@
     </div>
     <div id = "roundWordSpace">
       <div id="lyrics">
-  
+
       </div>
     </div>
     <div id="roundFooter">
@@ -64,12 +64,12 @@
 	      'Content-Type': 'application/json',
 	      'Authorization': 'Bearer ' + token
 	    }
-	  }).then(res => console.log(res));	  
+	  }).then(res => console.log(res));
 	});
-      
+
 	player.connect();
     };
-   
+
     const play = (uri, pos) => {
 	fetch('https://api.spotify.com/v1/me/player/play?device_id=' + did, {
 	    method: 'put',
@@ -124,21 +124,21 @@
 
         // shows player aliases in grid on host screen
         // first clear all current users:
-        var gridDiv = document.getElementById("nameGrid"); 
+        var gridDiv = document.getElementById("nameGrid");
         while (gridDiv.firstChild) {
           gridDiv.removeChild(gridDiv.firstChild);
         }
-        
+
         // create new children (aliases) to appear
         for (var i = 0; i < clientAliases.length; i++) {
           console.log(clientAliases[i]);
           var newDiv = document.createElement("div");
-          var newAlias = document.createTextNode(clientAliases[i]); 
+          var newAlias = document.createTextNode(clientAliases[i]);
           newDiv.appendChild(newAlias);
 
           gridDiv.appendChild(newDiv);
         }
-      
+
         if (info.removeAlias != undefined) {
           clientAliases = clientAliases.filter(e => e !== info.removeAlias);
         }
@@ -150,9 +150,7 @@
           document.getElementsByClassName("btn")[0].disabled = false;
         }
     });
-    socket.on('update pregame info', (info) => {
-      console.log(info);
-    })
+
     socket.on('game init', () => {
       document.getElementById('lobbyDiv').style.display = "none";
       document.getElementById('gameDiv').style.display = "block"
@@ -176,11 +174,12 @@
         pause();
         socket.emit('gimme da line'); //emit 5 seconds before pause
       }, clipLength);
-      
+
 
     })
     socket.on('round results', (results) =>{
-      //display results, wait for button to press for new round
+      console.log(results);
+      alert(results);
     })
     createGame();
   </script>
