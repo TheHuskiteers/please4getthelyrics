@@ -64,8 +64,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('gimme da line', () => {
-    console.log("nothing");
-    // socket.room.clients[/*current player*/].emit('gimme da line');
+//    socket.room.clients[/*current player*/].emit('gimme da line');
   })
 
 
