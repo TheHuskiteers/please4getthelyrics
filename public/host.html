@@ -7,13 +7,21 @@
 <link rel="stylesheet" href="/css/host.css">
 <body>
   <div class="container1">
-    <h1 id="waiting">Waiting for players to join...</h1>
+    <h1 id="waiting">Waiting for players</h1>
     <h3 id="curPlayers">Current players: 0</h3>
   </div>
 
   <div class="container2">
     <h2>Karaoke Room ID:</h2>
     <p id="code">Loading...</p>
+  </div>
+
+  <div id="nameGrid">
+    <div>Name1</div>
+    <div>Name2</div>
+    <div>Name3</div>
+    <div>Name3</div>
+    <div>Name3</div>
   </div>
 
   <button class="btn" onclick="">Start game!</button>
@@ -64,11 +72,24 @@
     }
 
     // keep track of clients as they join
+    var clientAliases = []
     document.getElementsByClassName("btn")[0].disabled = true;
     socket.on('host room info', (info) => {
         console.log(info);
         document.getElementById("code").innerHTML = info.roomId;
         document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
+        if (info.newAlias != undefined) {
+          clientAliases.push(info.newAlias);
+          var newDiv = document.createElement("div");
+          var newAlias = document.createTextNode(info.newAlias); 
+          newDiv.appendChild(newAlias)
+
+          var gridDiv = document.getElementById("nameGrid"); 
+          gridDiv.appendChild(newDiv);
+        } else if (info.removeAlias != undefined) {
+          clientAliases = clientAliases.filter(e => e !== info.removeAlias);
+        }
+
         
         if (info.clientLength == 0) {
           document.getElementsByClassName("btn")[0].disabled = true;

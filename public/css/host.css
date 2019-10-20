@@ -1,8 +1,26 @@
+body * {
+    animation: fadeIn ease 1s;
+    -webkit-animation: fadeIn ease 1s;
+    -moz-animation: fadeIn ease 1s;
+    -o-animation: fadeIn ease 1s;
+    -ms-animation: fadeIn ease 1s;
+}
+
+@keyframes fadeIn{
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+
 body {
     margin: 0;
     padding: 0;
     text-align: center;
-    font-family: 'sans-serif', 'Helvetica';
+    text-transform: uppercase;
+    font-family: 'Open Sans', 'sans-serif', 'Helvetica';
 }
 
 .container1 {
@@ -10,18 +28,16 @@ body {
 }
 
 .container2 {
-    margin: 0 50px 7vh 50px;
-    padding: 8vh 0 8vh 0;
-    border: 2px dotted rgb(121, 168, 190);
+    margin-bottom: 8vh;
     border-radius: 10px;
 }
 
 .btn {
     display: inline-block;
     margin-bottom: 1rem;
-    border: 2px solid rgb(163, 163, 163);
+    border: 2px solid #3099fc;
     border-radius: 5px;
-    background-color: grey;
+    background-color: #0069ed;
     text-decoration: none;
     font-size: 1rem;
     cursor: pointer;
@@ -42,9 +58,27 @@ h2 {
 #code {
     margin: 0 auto;
     padding: 1rem 2rem;
+    border: 1px solid #ffc420;
     border-radius: 20px;
     background-color: #ff9900;
     color: white;
     font-size: 20px;
-    width: max-content;
+    text-transform: lowercase;
+    letter-spacing: 5px;
+    width: 100px;
+}
+
+#nameGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 75px;
+    margin-bottom: 50px;
+    font-weight: bold;
+    text-transform: none;
+    color: #0069ed;
+}
+
+#nameGrid div {
+    justify-self: center;
+    align-self: center;
 }

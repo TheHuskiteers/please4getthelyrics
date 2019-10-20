@@ -26,7 +26,7 @@ var ID = function () {
 var rooms = {}
 function Room (host, clients) {
   this.host = host
-  this.clients = clients || []
+  this.clients = clients || [] // clients are a list of socket objects
 }
 
 io.on('connection', (socket) => {
@@ -46,12 +46,13 @@ io.on('connection', (socket) => {
   })
 
   // handle client joining
-  socket.on('client join', (roomId) => {
+  socket.on('client join', (roomId, alias) => {
     socket.host = false
     socket.roomId = roomId
+    socket.alias = alias
     socket.room = rooms[roomId]
     rooms[roomId].clients.push(socket)
-    socket.room.host.emit('host room info', { roomId: roomId, clientLength: socket.room.clients.length })
+    socket.room.host.emit('host room info', { roomId: roomId, clientLength: socket.room.clients.length, newAlias: alias })
     console.log('Client ' + socket.id + ' has joined!')
   })
 
@@ -63,9 +64,10 @@ io.on('connection', (socket) => {
       delete rooms[socket.roomId]
       // TODO: have clients timeout when room deleted
     } else if (socket.room) {
-      // if socket is host, remove from clients array, then update host
+      // if socket isn't host, remove from clients array, then update host
+      const alias = socket.alias
       socket.room.clients = socket.room.clients.filter((obj) => { return obj.id !== socket.id })
-      socket.room.host.emit('host room info', { roomId: socket.roomId, clientLength: socket.room.clients.length })
+      socket.room.host.emit('host room info', { roomId: socket.roomId, clientLength: socket.room.clients.length, removeAlias: alias })
     }
   })
 })
@@ -109,6 +111,7 @@ app.post('/connect-to-room', (req, res) => {
   console.log(req.body.roomNum)
   if (rooms[req.body.roomNum] != undefined) {
     res.cookie('roomNum', req.body.roomNum)
+    res.cookie('alias', req.body.alias)
     res.redirect('/client.html')
   }
   // not easy to return error msg to form submit
