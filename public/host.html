@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>Please 4get The Lyrics</title>
-  <meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
 </head>
 <link rel="stylesheet" href="/css/host.css">
 <body>
@@ -26,55 +25,51 @@
 
   <button class="btn" onclick="">Start game!</button>
 
-  <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script>
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      if (document.cookie.indexOf('token') == -1) {
-	      window.location = "http://localhost:3000/login"
-      }
-      const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-
-      const player = new Spotify.Player({
-        name: 'Please 4get The Lyrics',
-        getOAuthToken: cb => { cb(token); }
-      });
-
-      // Error handling
-      player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      player.addListener('authentication_error', ({ message }) => { console.error(message); });
-      player.addListener('account_error', ({ message }) => { console.error(message); });
-      player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-      // Playback status updates
-      player.addListener('player_state_changed', state => { console.log(state); });
-
-      // Ready
-      player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
-
-      // Not Ready
-      player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-      });
-
-      // Connect to the player!
-      player.connect();
-    };
-
+    if (document.cookie.indexOf('token') == -1) {
+	window.location = "http://localhost:3000/login"
+    }
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    var did;
   </script>
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script>    
+    window.onSpotifyWebPlaybackSDKReady = () => {
+	var player = new Spotify.Player({
+	    name: "Please 4get These Lyrics",
+	    getOAuthToken: cb => { cb(token); }
+	});
+
+	player.addListener('ready', ({ device_id }) => {
+	    did = device_id;
+	});
+	
+	player.connect();
+    };
+    
+    const play = (uri, pos) => {
+	fetch('https://api.spotify.com/v1/me/player/play?device_id=' + did, {
+	    method: 'put',
+	    body: JSON.stringify({ uris: [uri], position_ms: pos }),
+	    headers: {
+		'Content-Type': 'application/json',
+		'Authorization': 'Bearer ' + token
+	    }
+	}).then(res => console.log(res));
+    }
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
   <script type="text/javascript">
     var socket = io();
     function createGame() {
       socket.emit('host join');
-      console.log("game creating");
     }
 
     // keep track of clients as they join
     var clientAliases = []
     document.getElementsByClassName("btn")[0].disabled = true;
-    socket.on('host room info', (info) => {
+    socket.on('create game success', (info) => {
         console.log(info);
         document.getElementById("code").innerHTML = info.roomId;
         document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
@@ -97,8 +92,10 @@
           document.getElementsByClassName("btn")[0].disabled = false;
         }
     });
+    socket.on('update pregame info', (info) => {
+      console.log(info);
+    })
     createGame();
-
   </script>
 </body>
 </html>

@@ -182,6 +182,7 @@ body {
 
 h2 {
   color: #ff9900;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 #code {
@@ -213,6 +214,45 @@ h2 {
   display: none;
 }
 
+@media only screen and (max-width: 600px) {
+  #title{
+    font-size: 15vw;
+  }
+}
+/*
+Round-based Classes
+*/
+#roundDiv{
+  display: block;
+  width: 100%;
+}
+#roundHeader{
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  border-bottom: solid 5px rgb(156, 156, 156);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  top: 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+#roundHeader h2{
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  font-size: 10vw;
+  font-weight: 500;
+  font-family: 'broadway';
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
+#roundWordSpace{
+  width:100%;
+  background-color: rgb(248, 248, 248);
+}
+#roundFooter{
+  
+}
+
+
 /*
 Game text scrolling, for pieces that are automatically added.
 */
@@ -221,54 +261,52 @@ Game text scrolling, for pieces that are automatically added.
   display: inline-block;
 }
 .lyric{
+  --elapsed-color: #ff7b00;
+  --normal-color: #0073ff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   color: rgba(255, 255, 255, 0.01);
   font-size: 72px;
   -webkit-background-clip:text;
   animation-name: slideOverLyrics;
-  background-image: linear-gradient(to right, #ff9900 0%, #ff9900 0%, #0069ed 0%, #0069ed 100%);
+  background-image: linear-gradient(to right, var(--elapsed-color) 0%, var(--elapsed-color) 0%, var(--normal-color) 0%, var(--normal-color) 100%);
   animation-duration: .25s;
-  animation-delay: 1s;
+  /* animation-delay: 1s; */
   animation-fill-mode: forwards;
 }
 
 @keyframes slideOverLyrics{
   0%{
-    background-image: linear-gradient(to right, #ff9900 0%, #ff9900 0%, #0069ed 0%, #0069ed 100%);
+    background-image: linear-gradient(to right, var(--elapsed-color) 0%, var(--elapsed-color) 0%, var(--normal-color) 0%, var(--normal-color) 100%);
   }
   10%{
-    background-image: linear-gradient(to right, #ff9900 0%, #ff9900 10%, #0069ed 10%, #0069ed 100%);
+    background-image: linear-gradient(to right, var(--elapsed-color) 0%, var(--elapsed-color) 10%, var(--normal-color) 10%, var(--normal-color) 100%);
   }
   20%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 20%, #0069ed 20%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 20%, var(--normal-color) 20%, var(--normal-color) 100%);
   }
   30%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 30%, #0069ed 30%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 30%, var(--normal-color) 30%, var(--normal-color) 100%);
   }
   40%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 40%, #0069ed 40%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 40%, var(--normal-color) 40%, var(--normal-color) 100%);
   }
   50%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 50%, #0069ed 50%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 50%, var(--normal-color) 50%, var(--normal-color) 100%);
   }
   60%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 60%, #0069ed 60%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 60%, var(--normal-color) 60%, var(--normal-color) 100%);
   }
   70%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 70%, #0069ed 70%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 70%, var(--normal-color) 70%, var(--normal-color) 100%);
   }
   80%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 80%, #0069ed 80%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 80%, var(--normal-color) 80%, var(--normal-color) 100%);
   }
   90%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 90%, #0069ed 90%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 90%, var(--normal-color) 90%, var(--normal-color) 100%);
   }
   100%{
-    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 100%, #0069ed 100%, #0069ed 100%);
+    background-image: linear-gradient(to right,var(--elapsed-color) 0%, var(--elapsed-color) 100%, var(--normal-color) 100%, var(--normal-color) 100%);
   }
 }
 
-@media only screen and (max-width: 600px) {
-  #title{
-    font-size: 15vw;
-  }
-}
