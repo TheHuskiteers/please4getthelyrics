@@ -1,0 +1,274 @@
+@font-face {
+    font-family: 'broadway';
+    src: url('../fonts/broadway/broadway3d-italic-webfont.woff2') format('woff2'),
+         url('../fonts/broadway/broadway3d-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fade-in-fast {
+    animation: fadeIn ease 1s;
+    -webkit-animation: fadeIn ease 1s;
+    -moz-animation: fadeIn ease 1s;
+    -o-animation: fadeIn ease 1s;
+    -ms-animation: fadeIn ease 1s;
+}
+
+.fade-in-slow {
+    animation: fadeInSlow ease 2s;
+    -webkit-animation: fadeInSlow ease 2s;
+    -moz-animation: fadeInSlow ease 2s;
+    -o-animation: fadeInSlow ease 2s;
+    -ms-animation: fadeInSlow ease 2s;
+}
+
+.drop-down {
+    animation: slideDown ease 1s;
+    -webkit-animation: slideDown ease 1s;
+    -moz-animation: slideDown ease 1s;
+    -o-animation: slideDown ease 1s;
+    -ms-animation: slideDown ease 1s;
+}
+
+@keyframes slideDown {
+    0% {
+        margin-top: -400px;
+    }
+    100% {
+        margin-top: 15vh;
+    }
+}
+
+  @keyframes fadeIn{
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+
+  @-webkit-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+
+  @keyframes fadeInSlow{
+    0% {
+        opacity: 0;
+    }
+    50% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+
+  @-webkit-keyframes fadeInSlow {
+    0% {
+        opacity: 0;
+    }
+    50% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+  }
+
+body {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    font-family: 'sans-serif', 'Helvetica';
+}
+
+#title {
+    margin-top: 15vh;
+    color: #0069ed;
+    font-style: italic;
+    font-family: 'broadway';
+    font-size: 9vw;
+}
+@media (min-width: 900px) {
+    #title {
+       font-size: 75px;
+    }
+  }
+
+h3 {
+    color: lightgrey;
+    margin-bottom: 100px;
+    font-style: italic;
+}
+
+.container {
+    margin-bottom: 75px;
+}
+
+#start, #join {
+    margin-bottom: 50px;
+    display: inline-block;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+}
+#start:hover {
+    background: #3099fc;
+}
+
+#start {
+    padding: 1rem 2rem;
+    border: 2px solid #3099fc;
+    background: #0069ed;
+    color: #ffffff;
+}
+
+#join {
+    padding: 0.5rem 1rem;
+    border: 2px solid #ffc420;
+    background: #ff9900;
+    color: #ffffff;
+}
+#join:hover {
+    background: #ffc420;
+}
+
+p {
+    margin-bottom: 25px;
+    color: grey;
+    font-size: 15px;
+}
+
+input {
+    margin-bottom: 15px;
+    font-size: 20px;
+    border: none;
+    border-bottom: 2px solid #ff9900;
+    color: #ff9900;
+    background-color: transparent;
+}
+
+input::placeholder {
+  color: #ff9900;
+}
+
+input:focus {
+  outline: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: 'sans-serif', 'Helvetica';
+}
+
+.container1 {
+  margin: 15vh 0 15vh 0;
+}
+
+.container2 {
+
+}
+
+h2 {
+  color: #ff9900;
+}
+
+#code {
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  border: 2px solid #ffc420;
+  border-radius: 20px;
+  background-color: #ff9900;
+  color: white;
+  font-size: 20px;
+  width: max-content;
+}
+
+#joining {
+  display: block;
+  /* display: none; */
+}
+
+#playing {
+  display: none;
+  /* display: block; */
+}
+
+#waiting {
+  display: block;
+}
+
+#singing {
+  display: none;
+}
+
+/*
+Game text scrolling, for pieces that are automatically added.
+*/
+#lyrics{
+  color:#0069ed;
+  display: inline-block;
+}
+.lyric{
+  color: rgba(255, 255, 255, 0.01);
+  font-size: 72px;
+  -webkit-background-clip:text;
+  animation-name: slideOverLyrics;
+  background-image: linear-gradient(to right, #ff9900 0%, #ff9900 0%, #0069ed 0%, #0069ed 100%);
+  animation-duration: .25s;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideOverLyrics{
+  0%{
+    background-image: linear-gradient(to right, #ff9900 0%, #ff9900 0%, #0069ed 0%, #0069ed 100%);
+  }
+  10%{
+    background-image: linear-gradient(to right, #ff9900 0%, #ff9900 10%, #0069ed 10%, #0069ed 100%);
+  }
+  20%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 20%, #0069ed 20%, #0069ed 100%);
+  }
+  30%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 30%, #0069ed 30%, #0069ed 100%);
+  }
+  40%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 40%, #0069ed 40%, #0069ed 100%);
+  }
+  50%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 50%, #0069ed 50%, #0069ed 100%);
+  }
+  60%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 60%, #0069ed 60%, #0069ed 100%);
+  }
+  70%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 70%, #0069ed 70%, #0069ed 100%);
+  }
+  80%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 80%, #0069ed 80%, #0069ed 100%);
+  }
+  90%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 90%, #0069ed 90%, #0069ed 100%);
+  }
+  100%{
+    background-image: linear-gradient(to right,#ff9900 0%, #ff9900 100%, #0069ed 100%, #0069ed 100%);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #title{
+    font-size: 15vw;
+  }
+}

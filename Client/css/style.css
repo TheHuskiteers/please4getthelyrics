@@ -35,6 +35,14 @@ body {
     height: 100%; 
 }
 
+.foot-left{
+    text-align: left;
+}
+
+.foot-right{
+  float: right;
+}
+
 .pic {
     height: 75%;
     width: 75%;
