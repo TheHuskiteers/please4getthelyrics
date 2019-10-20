@@ -191,7 +191,6 @@ io.on('connection', (socket) => {
 
   socket.on('client result', (transcription) => {
     //collect character frequency of each letter, compare to character frequency of answer
-    console.log("we have client results");
     function getFrequency(string) {
     var freq = {};
     for (var i=0; i<string.length;i++) {
@@ -204,11 +203,20 @@ io.on('connection', (socket) => {
     }
     return freq;
     };
-    var tFreq = getFrequency(transcription);
-    var aFreq = getFrequency(socket.room.roundLineData.answer);
+    var tFreq = getFrequency(transcription.replace(/\W/g, ''));
+    var aFreq = getFrequency(socket.room.roundLineData.answer.replace(/\W/g, ''));
+    console.log(tFreq);
+    console.log(aFreq);
+    var diff = 0;
+    for (var variable in tFreq) {
+      if (aFreq.hasOwnProperty(variable)) {
+        diff += (Math.abs(aFreq[variable]-tFreq[variable]))
+      }
+      diff+=tFreq[variable];
+    }
+    console.log("diff = " + diff);
 
-
-    var correct = true; /// / TODO: make this more merciful
+    var correct = diff < 10; /// / TODO: make this more merciful
     results = {
       transcription: transcription,
       correct: correct
