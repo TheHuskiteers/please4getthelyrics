@@ -5,23 +5,43 @@
 </head>
 <link rel="stylesheet" href="/css/main.css">
 <body>
-  <div class="container1">
-    <h1 id="waiting">Waiting for players</h1>
-    <h3 id="curPlayers">Current players: 0</h3>
+
+  <div id="lobbyDiv">
+    <div class="container1">
+      <h1 id="waiting">Waiting for players</h1>
+      <h3 id="curPlayers">Current players: 0</h3>
+    </div>
+
+    <div class="container2">
+      <h2>Karaoke Room ID:</h2>
+      <p id="code">Loading...</p>
+    </div>
+  <div id="nameGrid">
+    <div>example name</div>
   </div>
 
-  <div class="container2">
-    <h2>Karaoke Room ID:</h2>
-    <p id="code">Loading...</p>
+    <button class="btn" onclick="startGame()">Start game!</button>
   </div>
 
-  <div id="nameGrid"></div>
-
-  <button class="btn" onclick="">Start game!</button>
-
+  <div style="display:none;" id="gameDiv">
+    <div id = "roundHeader">
+      <h2>Round<span id="roundNum"> 1</span></h2>
+    </div>
+    <div id = "roundWordSpace">
+      <div id="lyrics">
+  
+      </div>
+    </div>
+    <div id="roundFooter">
+      <div>
+        <span id="currentUser">User's Turn!</span>
+      </div>
+    </div>
+  </div>
+  <script src="js/lyrics.js"></script>
   <script>
     if (document.cookie.indexOf('token') == -1) {
-	window.location = "http://localhost:3000/login"
+	    window.location = "http://localhost:3000/login"
     }
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     var did;
@@ -66,25 +86,51 @@
   <script type="text/javascript">
     var socket = io();
     function createGame() {
+      console.log("In host.html, creating a new room");
       socket.emit('host join');
     }
+    function startGame(){
+      socket.emit('game start');
+    }
+
+    // initialize host information
+    var clients = [] // no clients yet
+    var clientAliases = [] // no client aliases yet
+    document.getElementsByClassName("btn")[0].disabled = true; // 0 players, cannot start game
+    socket.on('create game success', (info) => {
+      console.log("successfully created a new room, with " + info);
+      document.getElementById("code").innerHTML = info.roomId; // show room ID
+    })
 
     // keep track of clients as they join
-    var clientAliases = []
-    document.getElementsByClassName("btn")[0].disabled = true;
-    socket.on('create game success', (info) => {
+    socket.on('update pregame info', (info) => {
         console.log(info);
-        document.getElementById("code").innerHTML = info.roomId;
-        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
-        if (info.newAlias != undefined) {
-          clientAliases.push(info.newAlias);
-          var newDiv = document.createElement("div");
-          var newAlias = document.createTextNode(info.newAlias);
-          newDiv.appendChild(newAlias)
+        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clients.length;
+        clients = info.clients; // updates client list
+        clientAliases = info.clients.map((client) => { // updates alias list (for convenience)
+          return client.alias;
+        })
 
-          var gridDiv = document.getElementById("nameGrid");
+        console.log(clientAliases);
+
+        // shows player aliases in grid on host screen
+        // first clear all current users:
+        var gridDiv = document.getElementById("nameGrid"); 
+        while (gridDiv.firstChild) {
+          gridDiv.removeChild(gridDiv.firstChild);
+        }
+        
+        // create new children (aliases) to appear
+        for (var i = 0; i < clientAliases.length; i++) {
+          console.log(clientAliases[i]);
+          var newDiv = document.createElement("div");
+          var newAlias = document.createTextNode(clientAliases[i]); 
+          newDiv.appendChild(newAlias);
+
           gridDiv.appendChild(newDiv);
-        } else if (info.removeAlias != undefined) {
+        }
+      
+        if (info.removeAlias != undefined) {
           clientAliases = clientAliases.filter(e => e !== info.removeAlias);
         }
 
@@ -97,6 +143,38 @@
     });
     socket.on('update pregame info', (info) => {
       console.log(info);
+    })
+    socket.on('game init', () => {
+      document.getElementById('lobbyDiv').style.display = "none";
+      document.getElementById('gameDiv').style.display = "block"
+      socket.emit('new round');
+    })
+    socket.on('game info', (info) => {
+      //take the info created from processRoundData and spotify URI, put it on screen
+      let songURI = info.SpotifyURI;
+      let roundLineData = info.roundLineData
+      let visibleLines = roundlineData.visibleLines //First display
+      let startTimestamp = visibleLines[0].timestamp
+      let firstHiddenTimestamp = roundLineData.hiddenTimes[0].timestamp
+      
+      inputJSONLyrics(lyricBox,visibleLines)
+
+      play(songURI,startTimestamp);
+      playLyrics(lyricBox);
+
+      setTimeout(function(){
+        pause();
+        socket.emit('gimme da line'); //emit 5 seconds before pause
+      }, ((firstHiddenTimestamp-startTimestamp)*1000)-5000);
+      
+      setTimeout(function(){
+        pause();
+      }, ((firstHiddenTimestamp-startTimestamp)*1000));
+      
+
+    })
+    socket.on('round results', (results) =>{
+      //display results, wait for button to press for new round
     })
     createGame();
   </script>
