@@ -171,6 +171,7 @@ io.on('connection', (socket) => {
 
   // handle client joining
   socket.on('client join', (roomId, alias) => {
+    roomId = roomId.toLowerCase()
     console.log('Yay for ' + roomId + alias)
     if (rooms[roomId] && rooms[roomId].open) {
       socket.alias = alias
@@ -182,7 +183,7 @@ io.on('connection', (socket) => {
       socket.emit('client join success')
       console.log('Client ' + socket.id + ' has joined room ' + roomId)
     } else {
-      socket.emit('client join faliure')
+      socket.emit('client join failure')
       console.log('Client tried to connect with ' + roomId + alias)
       console.log('Unfortunately, ' + rooms[roomId])
       console.log('and ' + rooms[roomId].open)
