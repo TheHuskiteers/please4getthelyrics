@@ -35,9 +35,13 @@ body {
     height: 100%; 
 }
 
+.foot{
+    text-align: left;
+}
+
 .pic {
-    height: 75%;
-    width: 75%;
+    height: 50%;
+    width: 50%;
     opacity: 1.0;
     margin-top:10%;
 }
