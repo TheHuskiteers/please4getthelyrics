@@ -183,6 +183,7 @@ io.on('connection', (socket) => {
       socket.emit('client join success')
       console.log('Client ' + socket.id + ' has joined room ' + roomId)
     } else {
+      // app.redirect("/");
       socket.emit('client join failure')
       console.log('Client tried to connect with ' + roomId + alias)
       console.log('Unfortunately, ' + rooms[roomId])
