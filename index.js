@@ -73,7 +73,7 @@ function processRoundData(lyricData){
   let lastLineIndex = newLineIndicies.pop();
   let visibleLines = finalLineCouple.slice(0)
   let hiddenLines = []
-  let answerString = '' 
+  let answerString = ''
   for(let i = lastLineIndex + 1; i < finalLineCouple.length; i++){
     answerString += finalLineCouple[i].lyric
     hiddenLines.push(finalLineCouple[i])
@@ -132,7 +132,10 @@ io.on('connection', (socket) => {
 
     // TODO: Acually start game. Fetch song data, pick song,
     var gameInfo = {};
-    socket.emit('game info', gameInfo)
+    socket.emit('game init', gameInfo)
+    for(client of socket.room.clients){
+      client.emit('game start');
+    }
   })
 
   socket.on('gimme da line', () => {
@@ -142,7 +145,8 @@ io.on('connection', (socket) => {
   socket.on('new round', () =>{
     let nextSong = socket.room.songOrder.pop()
     let spotifyURI = nextSong.spotifyURI
-    let roundLineData = processRoundData(nextSong.lyricData)
+    socket.room.roundLineData = processRoundData(nextSong.lyricData)
+    socket.emit('game info', {spotifyURI: spotifyURI, roundLineData: socket.room.roundLineData});
   })
 
 
@@ -166,7 +170,13 @@ io.on('connection', (socket) => {
 
   socket.on('client result', (transcription) => {
     // TODO: verify transcription, attribute points accordingly
-    socket.room.host.emit('results')
+    let correct = socket.room.roundLineData.answer == transcription; //// TODO: make this more merciful
+    results = {
+      transcription: transcription,
+      correct: correct,
+
+    }
+    socket.room.host.emit('round results', results)
   })
 
   //handle disconnect
