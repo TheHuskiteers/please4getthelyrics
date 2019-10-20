@@ -41,7 +41,7 @@
   <script src="js/lyrics.js"></script>
   <script>
     if (document.cookie.indexOf('token') == -1) {
-	    window.location = "http://localhost:3000/login"
+	    window.location = "/login"
     }
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     var did;
