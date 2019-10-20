@@ -161,25 +161,24 @@
     socket.on('game info', (info) => {
       //take the info created from processRoundData and spotify URI, put it on screen
       console.log(info)
-      let songURI = info.SpotifyURI;
+      let songURI = info.spotifyURI;
       let roundLineData = info.roundLineData
       let visibleLines = roundLineData.visibleLines //First display
       let startTimestamp = visibleLines[0].timestamp
       let firstHiddenTimestamp = roundLineData.hiddenLines[0].timestamp
-      
+      let clipLength = (firstHiddenTimestamp-startTimestamp) * 1000
       inputJSONLyrics(lyricBox,visibleLines)
-
-      play("spotify:track:" + songURI, startTimestamp * 1000);
+      var fullURI = "spotify:track:" + info.spotifyURI
+      console.log(fullURI)
+      play(fullURI, startTimestamp * 1000);
       playLyrics(lyricBox);
-
       setTimeout(function(){
-        pause();
         socket.emit('gimme da line'); //emit 5 seconds before pause
-      }, ((firstHiddenTimestamp-startTimestamp)*1000)-5000);
+      }, (clipLength-5000))
       
       setTimeout(function(){
         pause();
-      }, ((firstHiddenTimestamp-startTimestamp)));
+      }, clipLength);
       
 
     })
