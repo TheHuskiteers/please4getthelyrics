@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Please 4get The Lyrics</title>
 </head>
 <link rel="stylesheet" href="/css/main.css">
@@ -94,6 +95,7 @@
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
   <script type="text/javascript">
     var socket = io();
+    var currentRoundInfo
     function createGame() {
       console.log("In host.html, creating a new room");
       socket.emit('host join');
@@ -160,16 +162,16 @@
       let responseBox = document.getElementById("responseText");
       responseBox.innerHTML = ''
       //take the info created from processRoundData and spotify URI, put it on screen
-      console.log(info)
+      currentRoundInfo = info
       let songURI = info.spotifyURI;
       let roundLineData = info.roundLineData
       let visibleLines = roundLineData.visibleLines //First display
       let startTimestamp = visibleLines[0].timestamp
       let firstHiddenTimestamp = roundLineData.hiddenLines[0].timestamp
       let clipLength = (firstHiddenTimestamp-startTimestamp) * 1000
+      emptyLyrics(lyricBox)
       inputJSONLyrics(lyricBox,visibleLines)
       var fullURI = "spotify:track:" + info.spotifyURI
-      console.log(fullURI)
       play(fullURI, startTimestamp * 1000);
       playLyrics(lyricBox);
       setTimeout(function(){
@@ -187,8 +189,24 @@
         responseBox.style.color = "green"
         responseBox.innerHTML = 'That is Correct! You said "' + results.transcription + '""'
       } else{
+        info = currentRoundInfo
+        let songURI = info.spotifyURI;
+        let roundLineData = info.roundLineData
+        let allLines = roundLineData.finalLineCouple
+        let startTimestamp = allLines[0].timestamp
+        let endTimestamp = allLines[allLines.length - 1].timestamp
+        let clipLength = (endTimestamp-startTimestamp) * 1000
+        emptyLyrics(lyricBox)
+        inputJSONLyrics(lyricBox,allLines)
+        var fullURI = "spotify:track:" + info.spotifyURI
         responseBox.style.color = "red"
-        responseBox.innerHTML = 'Sorry, that is incorrect. You said "' + results.transcription + '""'
+        responseBox.innerHTML = 'Sorry, that is incorrect. You said "' + results.transcription + '"'
+        play(fullURI, startTimestamp * 1000);
+        playLyrics(lyricBox);
+        setTimeout(function(){
+        pause();
+        // socket.emit('NEXT THING'); //emit 5 seconds before pause
+        }, clipLength);
         //TODO: Remove this text when a new round starts.
       }
     })
