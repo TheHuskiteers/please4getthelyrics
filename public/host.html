@@ -49,6 +49,15 @@
 	    }
 	}).then(res => console.log(res));
     }
+
+    const pause = () => {
+	fetch('https://api.spotify.com/v1/me/player/pause?device_id' + did, {
+	    method: 'put',
+	    headers: {
+		'Authorization': 'Bearer ' + token
+	    }
+	}).then(res => console.log(res));
+    }
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
