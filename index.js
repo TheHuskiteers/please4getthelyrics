@@ -211,8 +211,9 @@ io.on('connection', (socket) => {
     for (var variable in tFreq) {
       if (aFreq.hasOwnProperty(variable)) {
         diff += (Math.abs(aFreq[variable]-tFreq[variable]))
+      } else {
+        diff+=tFreq[variable];
       }
-      diff+=tFreq[variable];
     }
     console.log("diff = " + diff);
 
