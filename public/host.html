@@ -17,7 +17,7 @@
       <p id="code">Loading...</p>
     </div>
   <div id="nameGrid">
-    <div>example name</div>
+    <div></div>
   </div>
 
     <button class="btn" onclick="startGame()">Start game!</button>
@@ -34,7 +34,7 @@
     </div>
     <div id="roundFooter">
       <div>
-        <span id="currentUser">User's Turn!</span>
+        <span id="responseText"></span>
       </div>
     </div>
   </div>
@@ -157,6 +157,8 @@
       socket.emit('new round');
     })
     socket.on('game info', (info) => {
+      let responseBox = document.getElementById("responseText");
+      responseBox.innerHTML = ''
       //take the info created from processRoundData and spotify URI, put it on screen
       console.log(info)
       let songURI = info.spotifyURI;
@@ -178,11 +180,16 @@
 
     })
     socket.on('round results', (results) =>{
+      let responseBox = document.getElementById("responseText");
       console.log(results);
       if(results.correct){
-        alert("Correct! You said " + results.transcription);
+        //Fill in the underscores with 
+        responseBox.style.color = "green"
+        responseBox.innerHTML = 'That is Correct! You said "' + results.transcription + '""'
       } else{
-        alert("Sorry, that is incorrect. You said " + results.transcription);
+        responseBox.style.color = "red"
+        responseBox.innerHTML = 'Sorry, that is incorrect. You said "' + results.transcription + '""'
+        //TODO: Remove this text when a new round starts.
       }
     })
     createGame();
