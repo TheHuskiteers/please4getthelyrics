@@ -1,7 +1,6 @@
 /* centered columns styles */
 :root {
-  --key-color: #e6e6e6;
-  transition: 
+  --key-color: #e6e6e6; 
 }
 
 body {
@@ -101,17 +100,32 @@ width: 40px;
 0%{
   background: radial-gradient(var(--key-color) 5%, transparent);
 }
+10%{
+  background: radial-gradient(var(--key-color) 10%, transparent);
+}
 20%{
   background: radial-gradient(var(--key-color) 20%, transparent);
+}
+30%{
+  background: radial-gradient(var(--key-color) 25%, transparent);
 }
 40%{
   background: radial-gradient(var(--key-color) 30%, transparent);
 }
+50%{
+  background: radial-gradient(var(--key-color) 35%, transparent);
+}
 60%{
   background: radial-gradient(var(--key-color) 40%, transparent);
 }
+70%{
+  background: radial-gradient(var(--key-color) 45%, transparent);
+}
 80%{
   background: radial-gradient(var(--key-color) 50%, transparent);
+}
+90%{
+  background: radial-gradient(var(--key-color) 55%, transparent);
 }
 100%{
   background: radial-gradient(var(--key-color) 60%, transparent);

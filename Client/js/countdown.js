@@ -33,7 +33,7 @@ function mic() {
                 interimTranscript += transcript;
             }
             }
-            document.querySelector('p').innerHTML = finalTranscript + '<i style="color:#6e6e6e;">' + interimTranscript + '</>';
+            document.querySelector('p').innerHTML = finalTranscript + '<i id="words" style="color:#6e6e6e;">' + interimTranscript + '</>';
         }
         recognition.start();
         recognition.onspeechend = function() {
@@ -48,7 +48,8 @@ function mic() {
 function results() {
     document.documentElement.style.setProperty('--key-color', '#e6e6e6');
     document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
-    var words = document.getElementById("load").innerHTML;;
+    var words = document.getElementById("words").innerHTML;
+    document.getElementById("aura").setAttribute("animation-duration", "0s");
     console.log(words);
 }
 
