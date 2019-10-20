@@ -197,9 +197,11 @@
       emptyLyrics(lyricBox)
       inputJSONLyrics(lyricBox,allLines)
       if(results.correct){
-        //Fill in the underscores with 
         responseBox.style.color = "green"
         responseBox.innerHTML = 'That is Correct! You said "' + results.transcription + '""'
+        setTimeout(function(){
+          socket.emit('new round');
+        }, 3000);
       } else{
         var fullURI = "spotify:track:" + info.spotifyURI
         responseBox.style.color = "red"
@@ -209,10 +211,26 @@
         setTimeout(function(){
         pause();
         }, clipLength + 1000);
+        setTimeout(function(){
+          socket.emit('new round');
+          }, clipLength + 2000);
+        }
+    })
+    socket.on('game end', (info) =>{
+      winners = info.winner
+      highestPoints = info.points
+      winnerString = ''
+      winnerString += winners.pop()
+      if(winners.length > 0){
+        for(winner of winners){
+          winnerString += ' and ' + winner;
+        }
+        winnerString += " win with " + highestPoints + " points!"
+      } else{
+        winnerString += " wins with " + highestPoints + " points!"
       }
-      setTimeout(function(){
-        socket.emit('new round');
-        }, clipLength + 2000);
+      emptyLyrics(lyricBox);
+      lyricBox.innerHTML = winnerString;
     })
     createGame();
   </script>

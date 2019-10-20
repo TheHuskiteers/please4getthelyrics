@@ -11,3 +11,8 @@ This project uses the JavaScript Web Speech API to turn your beautiful singing i
 
 ## Web App Development
 The application programs reside on a remote server and that are delivered to players over the Internet. The client-side programming consists of HTML, CSS, and Javascript. The client-side programming is powered through server-side programming, consisting of a custom inteface comprised of JSON, Javascript, and Python.
+
+##How to use:
+You can either use the QR code below or download the repo and run it in a web browser on any device.
+
+<img src="public/pictures/qr-code.png" alt="QR" width="150px" height="150px" align="middle">

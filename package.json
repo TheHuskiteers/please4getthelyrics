@@ -20,6 +20,6 @@
     "lint": "standard",
     "lint-fix": "standard --fix",
     "nm": "nodemon index.js",
-    "start": "nodemon index.js"
+    "start": "until node index.js; do sleep 1; done"
   }
 }

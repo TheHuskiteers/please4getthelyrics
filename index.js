@@ -160,7 +160,17 @@ io.on('connection', (socket) => {
     currentPlayerName = socket.room.clients[socket.room.currentPlayerIndex].alias
     console.log(JSON.stringify(currentPlayerName))
     if(socket.room.songOrder.length == 0){
-      //TODO: End Game.
+      let winner = []
+      let highestPoints = -1
+      for (client of socket.room.clients){
+        if(client.points > highestPoints){
+          winner = [client.alias]
+          highestPoints = client.points
+        }else if (client.points == highestPoints){
+          winner.push(client.alias);
+        }
+      }
+      socket.emit('game end', {winner: winner, points: highestPoints})
     } else{
       const nextSong = socket.room.songOrder.pop()
       const spotifyURI = nextSong.spotifyURI
@@ -174,8 +184,9 @@ io.on('connection', (socket) => {
     roomId = roomId.toLowerCase()
     console.log('Yay for ' + roomId + alias)
     if (rooms[roomId] && rooms[roomId].open) {
-      socket.alias = alias
-      socket.host = false
+      socket.alias = alias;
+      socket.points = 0;
+      socket.host = false;
       socket.roomId = roomId
       socket.room = rooms[roomId]
       rooms[roomId].clients.push(socket)
@@ -226,6 +237,9 @@ io.on('connection', (socket) => {
     console.log("diff = " + diff);
 
     var correct = diff < 10 && transcription.length > 0;
+    if(correct){
+      socket.room.clients[socket.room.currentPlayerIndex].points += 1
+    }
     results = {
       transcription: transcription,
       correct: correct,
@@ -274,22 +288,19 @@ app.get('/login', (req, res) => {
 app.get('/callback', (req, res) => {
   const { code } = req.query
   spotifyApi.authorizationCodeGrant(code).then((data) => {
-    spotifyApi.setAccessToken(data.body.access_token)
-    spotifyApi.setRefreshToken(data.body.refresh_token)
+    spotifyApi.setAccessToken(data.body.access_token);
+    spotifyApi.setRefreshToken(data.body.refresh_token);
     res.cookie('token', data.body.access_token, { maxAge: data.body.expires_in })
     res.redirect('/host.html')
   }).catch((err) => console.log('Yikes! ' + err.message))
 })
 
 app.post('/connect-to-room', (req, res) => {
-  console.log(req.body.roomNum, req.body.alias)
+  console.log(req.body.roomNum, req.body.alias);
   if (rooms[req.body.roomNum] !== undefined) { // if room exists
     res.cookie('roomNum', req.body.roomNum)
     res.cookie('alias', req.body.alias)
     res.redirect('/client.html')
-  } else {
-    console.log("room doesnt exist");
-    res.redirect('/');
   }
   // not easy to return error msg to form submit
   // so just do nothing if roomId DNE
