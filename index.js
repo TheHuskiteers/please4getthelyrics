@@ -218,6 +218,11 @@ io.on('connection', (socket) => {
         diff+=tFreq[variable];
       }
     }
+    for (var variable in aFreq) {
+      if (!tFreq.hasOwnProperty(variable)) {
+        diff+=aFreq[variable];
+      }
+    }
     console.log("diff = " + diff);
 
     var correct = diff < 10 && transcription.length > 0;
