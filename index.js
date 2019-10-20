@@ -220,8 +220,8 @@ io.on('connection', (socket) => {
     var correct = diff < 10; /// / TODO: make this more merciful
     results = {
       transcription: transcription,
-      correct: correct
-
+      correct: correct,
+      answer: socket.room.roundLineData.answer
     }
     socket.room.host.emit('round results', results)
   })

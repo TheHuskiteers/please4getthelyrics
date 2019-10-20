@@ -179,7 +179,11 @@
     })
     socket.on('round results', (results) =>{
       console.log(results);
-      alert(results);
+      if(results.correct){
+        alert("Correct! You said " + results.transcription);
+      } else{
+        alert("Sorry, that is incorrect. You said " + results.transcription);
+      }
     })
     createGame();
   </script>
