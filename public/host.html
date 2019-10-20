@@ -27,7 +27,7 @@
     var did;
   </script>
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
-  <script>    
+  <script>
     window.onSpotifyWebPlaybackSDKReady = () => {
 	var player = new Spotify.Player({
 	    name: "Please 4get These Lyrics",
@@ -37,10 +37,10 @@
 	player.addListener('ready', ({ device_id }) => {
 	    did = device_id;
 	});
-	
+
 	player.connect();
     };
-    
+
     const play = (uri, pos) => {
 	fetch('https://api.spotify.com/v1/me/player/play?device_id=' + did, {
 	    method: 'put',
@@ -79,16 +79,16 @@
         if (info.newAlias != undefined) {
           clientAliases.push(info.newAlias);
           var newDiv = document.createElement("div");
-          var newAlias = document.createTextNode(info.newAlias); 
+          var newAlias = document.createTextNode(info.newAlias);
           newDiv.appendChild(newAlias)
 
-          var gridDiv = document.getElementById("nameGrid"); 
+          var gridDiv = document.getElementById("nameGrid");
           gridDiv.appendChild(newDiv);
         } else if (info.removeAlias != undefined) {
           clientAliases = clientAliases.filter(e => e !== info.removeAlias);
         }
 
-        
+
         if (info.clientLength == 0) {
           document.getElementsByClassName("btn")[0].disabled = true;
         } else {
