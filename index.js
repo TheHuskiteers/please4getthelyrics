@@ -107,8 +107,10 @@ function Room (host) {
     })
     return client_data
   }
-  this.open = true
-  this.songOrder = shuffle(jsonLyricFiles)
+  this.open = true;
+  this.songOrder = shuffle(jsonLyricFiles);
+  this.remainingPlayers = shuffle(this.clients)
+
 }
 
 io.on('connection', (socket) => {
@@ -137,7 +139,11 @@ io.on('connection', (socket) => {
   })
 
   socket.on('gimme da line', () => {
-    // socket.room.clients[/*current player*/].emit('gimme da line');
+    currentPlayer = socket.room.clients.pop()
+    currentPlayer.emit('gimme da line');
+    
+    //Once the player has said the line, put the player at the back of the player order.
+    socket.room.clients.unshift(currentPlayer)
   })
 
   socket.on('new round', () => {
