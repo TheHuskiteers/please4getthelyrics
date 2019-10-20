@@ -23,7 +23,6 @@ function mic() {
         recognition.maxAlternatives = 10;
         recognition.continuous = false;
         recognition.onresult = (event) => {
-            document.documentElement.style.setProperty('--key-color', '#ff9900');
             document.getElementById("load").className = document.getElementById("load").className.replace('',/\bloading\b/);
             let interimTranscript = '';
             for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
@@ -36,7 +35,6 @@ function mic() {
             }
             document.querySelector('p').innerHTML = finalTranscript + '<i style="color:#6e6e6e;">' + interimTranscript + '</>';
         }
-        document.documentElement.style.setProperty('--key-color', '#e6e6e6');
         recognition.start();
         recognition.onspeechend = function() {
             document.documentElement.style.setProperty('--key-color', '#e6e6e6');
