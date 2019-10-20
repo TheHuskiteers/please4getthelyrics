@@ -21,7 +21,7 @@
 
     var socket = io();
     function joinGame(){
-      socket.emit('client join', (roomId, alias));
+      socket.emit('client join', roomId, alias);
       console.log("joining game");
     }
     joinGame();
