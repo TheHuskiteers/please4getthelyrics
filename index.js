@@ -106,7 +106,7 @@ app.get('/callback', (req, res) => {
 
 app.post('/connect-to-room', (req, res) => {
   console.log(req.body.roomNum)
-  if (rooms[req.body.roomNum] != undefined) {
+  if (rooms[req.body.roomNum] !== undefined) {
     res.cookie('roomNum', req.body.roomNum)
     res.redirect('/client.html')
   }
