@@ -104,8 +104,8 @@
           //we need to record the voice, take transcription and put it to variable
           var transcription = document.getElementById("words").innerHTML;
           setTimeout(function () {
-            console.log(transcription);
-            socket.emit('client result', transcription);
+            console.log(finalTranscript);
+            socket.emit('client result', finalTranscript);
           }, 1000)
       }
 
