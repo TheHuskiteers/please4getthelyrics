@@ -2,8 +2,9 @@
 <html>
 <head>
   <title>Please 4get The Lyrics</title>
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
 </head>
-<link rel="stylesheet" href="/css/host.css">
+<link rel="stylesheet" href="/css/main.css">
 <body>
   <div id="joining">
     <div class="container1">
@@ -12,7 +13,7 @@
     </div>
 
     <div class="container2">
-      <h2>Karaoke Room ID:</h2>
+      <h2 id="title">Your Room ID:</h2>
       <p id="code">Room ID should go here</p>
     </div>
   </div>
@@ -78,16 +79,16 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
   <script type="text/javascript">
-    var socket = io();
-    function createGame() {
-      socket.emit('host join');
-      console.log("game creating");
-    }
-    socket.on('host room info', (info) => {
-        console.log(info);
-        document.getElementById("code").innerHTML = info.roomId;
-    })
-    createGame();
+  var socket = io();
+  function createGame() {
+    socket.emit('host join');
+    console.log("game creating");
+  }
+  socket.on('host room info', (info) => {
+      console.log(info);
+      document.getElementById("code").innerHTML = info.roomId;
+  })
+  createGame();
   </script>
 </body>
 </html>
