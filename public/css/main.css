@@ -338,6 +338,10 @@ Round-based Classes
   border-top-right-radius: 15px;
   background-color: rgb(240, 240, 240);
 }
+#responseText{
+  font-size: 24px;
+  color: black;
+}
 #mysteryLyric{
   color: rgb(90, 0, 149);
 }

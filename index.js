@@ -217,7 +217,7 @@ io.on('connection', (socket) => {
     }
     console.log("diff = " + diff);
 
-    var correct = diff < 10; /// / TODO: make this more merciful
+    var correct = diff < 10 && transcription.length > 0;
     results = {
       transcription: transcription,
       correct: correct,
