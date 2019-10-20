@@ -1,7 +1,7 @@
 /* centered columns styles */
 body {
     height: 100% !important;
-    background-color: #88BEE8FF !important;
+    background-color: #ffffff !important;
 }
 
 .row-centered {
@@ -19,7 +19,7 @@ body {
     font-size: 30px;
     margin-right:-4px;
     text-align: center !important;
-    background-color: #b19cd9;
+    background-color: #ffffff;
 }
 
 .col-border {
@@ -65,7 +65,7 @@ body {
 
 .pic_border {
     margin-top: 100px; 
-    background-color: #88BEE8FF;
+    background-color: #ffffff;
 }
 
 .speech {
@@ -92,13 +92,13 @@ body {
 
 @keyframes pulse{
   0%{
-    background: radial-gradient(#ffffff 10%, transparent);
+    background: radial-gradient(#ff9900 10%, transparent);
   }
   50%{
-    background: radial-gradient(#ffffff 20%, transparent);
+    background: radial-gradient(#ff9900 20%, transparent);
   }
   100%{
-    background: radial-gradient(#ffffff 30%, transparent);
+    background: radial-gradient(#ff9900 30%, transparent);
   }
 }
 
