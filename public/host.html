@@ -2,93 +2,99 @@
 <html>
 <head>
   <title>Please 4get The Lyrics</title>
-  <meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
 </head>
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/host.css">
 <body>
-  <div id="joining">
-    <div class="container1">
-      <h1 id="waiting">Waiting for players to join...</h1>
-      <p>Socket countdown should go here</p>
-    </div>
-
-    <div class="container2">
-      <h2 id="title">Your Room ID:</h2>
-      <p id="code">Room ID should go here</p>
-    </div>
+  <div class="container1">
+    <h1 id="waiting">Waiting for players to join...</h1>
+    <h3 id="curPlayers">Current players: 0</h3>
   </div>
 
-  <div id="playing">
-    <h1>Song # {}</h1>
-    <h2>Player {}'s turn</h2>
-
-    <div id="trackImg"></div> <!-- Image of the song's album cover goes here? -->
-
-    <h4 id="waiting">Wait for it...</h4>
-    <h3 id="singing">FORGET THOSE LYRICS!</h3>
-
-    <!-- Choose a song from the local directory of songs -->
-    <!-- Fetch the song cover image using Spotify API -->
-    <!-- Based on lyrics, a random start/end timestamp (and corresponding lyrics) are chosen -->
-    <!-- We need to make sure Spotify's audio and timestamps are synced properly -->
-    <!-- Play Spotify web player until the first timestamp, then music pauses -->
-    <!-- Prompt sent to Player x to record their voice. User's device determines if voice matches the lyrics -->
-    <!-- If so, User sends back True. Otherwise, sends back False -->
-    <!-- Server awards a point depending on correctness, and moves onto the next player/song -->
+  <div class="container2">
+    <h2>Karaoke Room ID:</h2>
+    <p id="code">Loading...</p>
   </div>
 
-
-
-
+  <button class="btn" onclick="">Start game!</button>
+  
+  <script>
+    if (document.cookie.indexOf('token') == -1) {
+	window.location = "http://localhost:3000/login"
+    }
+  </script>
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script>
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      if (document.cookie.indexOf('token') == -1) {
-	      window.location = "http://localhost:3000/login"
-      }
-      const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-
-      const player = new Spotify.Player({
-        name: 'Please 4get The Lyrics',
-        getOAuthToken: cb => { cb(token); }
-      });
-
-      // Error handling
-      player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      player.addListener('authentication_error', ({ message }) => { console.error(message); });
-      player.addListener('account_error', ({ message }) => { console.error(message); });
-      player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-      // Playback status updates
-      player.addListener('player_state_changed', state => { console.log(state); });
-
-      // Ready
-      player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
-
-      // Not Ready
-      player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-      });
-
-      // Connect to the player!
-      player.connect();
+    window.onSpotifyWebPlaybackSDKReady = () => {};
+    async function waitForSpotifyWebPlaybackSDKToLoad () {
+	return new Promise(resolve => {
+	    if (window.Spotify) {
+		resolve(window.Spotify);
+	    } else {
+		window.onSpotifyWebPlaybackSDKReady = () => {
+		    resolve(window.Spotify);
+		};
+	    }
+	});
     };
+    
+    var sdk = (async () => {
+	const { Player } = await waitForSpotifyWebPlaybackSDKToLoad();
+	const sdk = new Player({
+	    name: "Please 4get These Lyrics",
+	    getOAuthToken: callback => { callback(document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")); }	
+	});
+	console.log(sdk);
 
+	let connected = await sdk.connect();
+	if (connected) {
+	    fetch("https://api.spotify.com/v1/me/player", {
+		method: 'put',
+		body: JSON.stringify({ device_ids: [sdk.id] }),
+		headers: {
+		    'Content-Type': 'application/json',
+		    'Authorization': 'Bearer ' + sdk._options.id,
+		}
+	    })
+	}
+	return sdk
+    })();
+
+    const play = (uri, pos) => {
+	var o = (async () => (await sdk)._options)();
+	console.log(o);
+	fetch('https://api.spotify.com/v1/me/player/play?device_id=' + o.id, {
+	    method: 'put',
+	    body: JSON.stringify({ uris: [uri], position_ms: pos }),
+	    headers: {
+		'Content-Type': 'application/json',
+		'Authorization': 'Bearer ' + o.getOAuthToken
+	    }
+	});
+    };
   </script>
+  
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
   <script type="text/javascript">
-  var socket = io();
-  function createGame() {
-    socket.emit('host join');
-    console.log("game creating");
-  }
-  socket.on('host room info', (info) => {
-      console.log(info);
-      document.getElementById("code").innerHTML = info.roomId;
-  })
-  createGame();
+    var socket = io();
+    function createGame() {
+      socket.emit('host join');
+      console.log("game creating");
+    }
+
+    // keep track of clients as they join
+    document.getElementsByClassName("btn")[0].disabled = true;
+    socket.on('host room info', (info) => {
+        console.log(info);
+        document.getElementById("code").innerHTML = info.roomId;
+        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
+        
+        if (info.clientLength == 0) {
+          document.getElementsByClassName("btn")[0].disabled = true;
+        } else {
+          document.getElementsByClassName("btn")[0].disabled = false;
+        }
+    });
+    createGame();
   </script>
 </body>
 </html>

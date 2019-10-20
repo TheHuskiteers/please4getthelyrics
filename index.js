@@ -9,7 +9,6 @@ var bodyParser = require('body-parser')
 
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
-
 app.use(express.static(path.join(__dirname, '/public')))
 
 const port = 3000
@@ -115,14 +114,14 @@ app.get('/callback', (req, res) => {
   spotifyApi.authorizationCodeGrant(code).then((data) => {
     spotifyApi.setAccessToken(data.body.access_token)
     spotifyApi.setRefreshToken(data.body.refresh_token)
-    res.cookie('token', data.body.access_token)
+    res.cookie('token', data.body.access_token, { maxAge: data.body.expires_in })
     res.redirect('/host.html')
   }).catch((err) => console.log('Yikes! ' + err.message))
 })
 
 app.post('/connect-to-room', (req, res) => {
   console.log(req.body.roomNum)
-  if (rooms[req.body.roomNum] != undefined) {
+  if (rooms[req.body.roomNum] !== undefined) {
     res.cookie('roomNum', req.body.roomNum)
     res.redirect('/client.html')
   }

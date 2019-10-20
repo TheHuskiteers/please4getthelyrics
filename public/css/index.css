@@ -85,7 +85,8 @@ body {
     padding: 0;
     margin: 0;
     text-align: center;
-    font-family: 'sans-serif', 'Helvetica';
+    text-transform: uppercase;
+    font-family: 'Open Sans', 'sans-serif', 'Helvetica';
 }
 
 #title {
@@ -94,6 +95,7 @@ body {
     font-style: italic;
     font-family: 'broadway';
     font-size: 9vw;
+    text-shadow: 0 0 4px rgb(255, 219, 103);
 }
 @media (min-width: 900px) {
     #title {
@@ -103,7 +105,7 @@ body {
 
 h3 {
     color: lightgrey;
-    margin-bottom: 100px;
+    margin-bottom: 7vh;
     font-style: italic;
 }
 
@@ -117,9 +119,10 @@ h3 {
     border-radius: 10px;
     margin-bottom: 1rem;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 20px;
     cursor: pointer;
     text-align: center;
+    text-transform: uppercase;
 }
 #start:hover {
     background: #3099fc;
@@ -136,31 +139,66 @@ h3 {
     padding: 0.5rem 1rem;
     border: 2px solid #ffc420;
     background: #ff9900;
+    font-size: 16px;
     color: #ffffff;
 }
 #join:hover {
     background: #ffc420;
 }
 
+/*
 p {
     margin-bottom: 25px;
-    color: grey;
+    color: lightgrey;
+    font-weight: bold;
     font-size: 15px;
+}
+*/
+
+hr {
+  margin: 25px 13vw 25px 13vw;
+  max-width: 800px;
 }
 
 input {
     margin-bottom: 15px;
-    font-size: 20px;
-    border: none;
-    border-bottom: 2px solid #ff9900;
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+    border: 2px solid #ff9900;
+    border-radius: 20px;
     color: #ff9900;
     background-color: transparent;
 }
 
 input::placeholder {
-  color: #ff9900;
+  color: #ffbc58;
+  text-align: center;
 }
 
 input:focus {
   outline: none;
+}
+
+@media (max-width: 800px) {
+  #title {
+    font-size: 70px;
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+
+  #start {
+    padding: 0.7rem 1rem;
+  }
+
+  #start, #join {
+    font-size: 15px;
+  }
+
+  input {
+    padding: 7px;
+    font-size: 16px;
+  }
 }

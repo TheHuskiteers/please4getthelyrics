@@ -1,12 +1,14 @@
-var timeleft = 10
-var downloadTimer = setInterval(function () {
+function timer () {
+  var timeleft = document.currentScript.getAttribute('time');
+  var status = document.currentScript.getAttribute('status');
+  var downloadTimer = setInterval(function () {
   timeleft--
   document.getElementById('countdowntimer').textContent = timeleft
   if (timeleft <= 0) {
     clearInterval(downloadTimer)
-    turn()
   }
 }, 1000)
+}
 
 function turn () {
   setTimeout(function () {
@@ -19,3 +21,5 @@ function turn () {
     }
   }, 1000)
 }
+
+timer();
