@@ -55,5 +55,13 @@
       console.log("joining game");
     }
     joinGame();
+    socket.on('game start', () => {
+      //refresh html, make it waitturn
+    })
+    socket.on('gimme da line', () => {
+      //we need to record the voice, take transcription and put it to variable
+      var transcription = ""
+      socket.emit('line results', transcription);
+    })
   </script>
 </html>
