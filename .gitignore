@@ -4,3 +4,5 @@ shell.nix
 .idea/
 yarn-error.log
 .DS_Store
+# Cause we use YARN in this house :)
+package-lock.json
