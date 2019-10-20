@@ -93,27 +93,26 @@ function processRoundData(lyricData){
 console.log(JSON.stringify(processRoundData(jsonLyricFiles[6].lyricData)))
 
 var rooms = {}
-function Room (host, clients, roomSize) {
+function Room (host) {
   this.host = host
-  this.clients = clients || []
+  this.clients = []
+  this.roomSize = 0;
+  this.open = true;
   this.getClients = function () {
     var client_data = this.clients.map((client) => {
       return {
-        username: client.username,
+        alias: client.alias,
         id: client.id
       }
     })
     return client_data;
   }
   this.open = true;
-  this.roomSize = roomSize;
   this.songOrder = shuffle(jsonLyricFiles);
 
 }
 
 io.on('connection', (socket) => {
-  console.log('something joined')
-
   // handle host joining
   socket.on('host join', () => {
     socket.host = true
@@ -140,25 +139,33 @@ io.on('connection', (socket) => {
   })
 
   socket.on('new round', () =>{
+<<<<<<< HEAD
+    // do nothing
+=======
     let nextSong = socket.room.songOrder.pop()
     let spotifyURI = nextSong.spotifyURI
     let roundLineData = processRoundData(nextSong.lyricData)
+>>>>>>> c5e9c5c5d35dc786a93e29ec928f2aff25b9363b
   })
 
 
   // handle client joining
-  socket.on('client join', (roomId, username) => {
+  socket.on('client join', (roomId, alias) => {
+    console.log("Yay for " + roomId + alias);
     if(rooms[roomId] && rooms[roomId].open){
-      socket.username = username
+      socket.alias = alias
       socket.host = false
       socket.roomId = roomId
       socket.room = rooms[roomId]
       rooms[roomId].clients.push(socket)
-      socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients()});
+      socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients() });
       socket.emit('client join success');
       console.log('Client ' + socket.id + ' has joined room '+ roomId);
     } else {
       socket.emit("client join faliure");
+      console.log("Client tried to connect with " + roomId + alias);
+      console.log("Unfortunately, " + rooms[roomId]);
+      console.log("and " + rooms[roomId].open);
       console.log('Client ' + socket.id + ' failed to join room '+ roomId);
     }
 
@@ -174,6 +181,7 @@ io.on('connection', (socket) => {
     console.log((socket.host) ? 'Host ' + socket.id + " has left, because of '" + reason + "'." : 'Client ' + socket.id + " has left, because of '" + reason + "'.")
 
     // delete room
+    
     if (socket.host) {
       delete rooms[socket.roomId]
       // TODO: have clients timeout when room deleted
@@ -181,8 +189,7 @@ io.on('connection', (socket) => {
       // if socket isn't host, remove from clients array, then update host
       const alias = socket.alias
       socket.room.clients = socket.room.clients.filter((obj) => { return obj.id !== socket.id })
-      socket.room.host.emit('host room info', { roomId: socket.roomId, clientLength: socket.room.clients.length, removeAlias: alias })
-      socket.room.host.emit('update pregame info', { roomId: roomId, clients: socket.room.getClients()});
+      socket.room.host.emit('update pregame info', { roomId: socket.host, clients: socket.room.getClients() });
     }
   })
 })
@@ -223,8 +230,8 @@ app.get('/callback', (req, res) => {
 })
 
 app.post('/connect-to-room', (req, res) => {
-  console.log(req.body.roomNum)
-  if (rooms[req.body.roomNum] !== undefined) {
+  console.log(req.body.roomNum, req.body.alias)
+  if (rooms[req.body.roomNum] !== undefined) { // if room exists
     res.cookie('roomNum', req.body.roomNum)
     res.cookie('alias', req.body.alias)
     res.redirect('/client.html')

@@ -16,8 +16,9 @@
       <h2>Karaoke Room ID:</h2>
       <p id="code">Loading...</p>
     </div>
-
-    <div id="nameGrid"></div>
+  <div id="nameGrid">
+    <div>example name</div>
+  </div>
 
     <button class="btn" onclick="startGame()">Start game!</button>
   </div>
@@ -85,28 +86,51 @@
   <script type="text/javascript">
     var socket = io();
     function createGame() {
+      console.log("In host.html, creating a new room");
       socket.emit('host join');
     }
     function startGame(){
       socket.emit('game start');
     }
 
-    // keep track of clients as they join
-    var clientAliases = []
-    document.getElementsByClassName("btn")[0].disabled = true;
+    // initialize host information
+    var clients = [] // no clients yet
+    var clientAliases = [] // no client aliases yet
+    document.getElementsByClassName("btn")[0].disabled = true; // 0 players, cannot start game
     socket.on('create game success', (info) => {
-        console.log(info);
-        document.getElementById("code").innerHTML = info.roomId;
-        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
-        if (info.newAlias != undefined) {
-          clientAliases.push(info.newAlias);
-          var newDiv = document.createElement("div");
-          var newAlias = document.createTextNode(info.newAlias);
-          newDiv.appendChild(newAlias)
+      console.log("successfully created a new room, with " + info);
+      document.getElementById("code").innerHTML = info.roomId; // show room ID
+    })
 
-          var gridDiv = document.getElementById("nameGrid");
+    // keep track of clients as they join
+    socket.on('update pregame info', (info) => {
+        console.log(info);
+        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clients.length;
+        clients = info.clients; // updates client list
+        clientAliases = info.clients.map((client) => { // updates alias list (for convenience)
+          return client.alias;
+        })
+
+        console.log(clientAliases);
+
+        // shows player aliases in grid on host screen
+        // first clear all current users:
+        var gridDiv = document.getElementById("nameGrid"); 
+        while (gridDiv.firstChild) {
+          gridDiv.removeChild(gridDiv.firstChild);
+        }
+        
+        // create new children (aliases) to appear
+        for (var i = 0; i < clientAliases.length; i++) {
+          console.log(clientAliases[i]);
+          var newDiv = document.createElement("div");
+          var newAlias = document.createTextNode(clientAliases[i]); 
+          newDiv.appendChild(newAlias);
+
           gridDiv.appendChild(newDiv);
-        } else if (info.removeAlias != undefined) {
+        }
+      
+        if (info.removeAlias != undefined) {
           clientAliases = clientAliases.filter(e => e !== info.removeAlias);
         }
 

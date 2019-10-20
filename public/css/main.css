@@ -242,6 +242,21 @@ h2 {
   width: max-content;
 }
 
+#nameGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 75px;
+  margin-bottom: 50px;
+  font-weight: bold;
+  text-transform: none;
+  color: #0069ed;
+}
+
+#nameGrid div {
+  justify-self: center;
+  align-self: center;
+}
+
 #joining {
   display: block;
   /* display: none; */
