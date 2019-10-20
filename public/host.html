@@ -66,24 +66,38 @@
   <script type="text/javascript">
     var socket = io();
     function createGame() {
+      console.log("In host.html, creating a new room");
       socket.emit('host join');
     }
 
-    // keep track of clients as they join
-    var clientAliases = []
-    document.getElementsByClassName("btn")[0].disabled = true;
+    // initialize host information
+    var clients = [] // no clients yet
+    var clientAliases = [] // no client aliases yet
+    document.getElementsByClassName("btn")[0].disabled = true; // 0 players, cannot start game
     socket.on('create game success', (info) => {
-        console.log(info);
-        document.getElementById("code").innerHTML = info.roomId;
-        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clientLength;
-        if (info.newAlias != undefined) {
-          clientAliases.push(info.newAlias);
-          var newDiv = document.createElement("div");
-          var newAlias = document.createTextNode(info.newAlias); 
-          newDiv.appendChild(newAlias)
+      console.log("successfully created a new room, with " + info);
+      document.getElementById("code").innerHTML = info.roomId; // show room ID
+    })
 
-          var gridDiv = document.getElementById("nameGrid"); 
-          gridDiv.appendChild(newDiv);
+    // keep track of clients as they join
+    socket.on('update pregame info', (info) => {
+        console.log(info);
+        document.getElementById("curPlayers").innerHTML = "Current players: " + info.clients.length;
+        if (info.newAlias != undefined) {
+          clients = info.clients; // updates client list
+          clientAliases = info.clients.map((client) => { // updates alias list (for convenience)
+            return client[alias];
+          })
+
+          // shows player aliases in grid on host screen
+          for (alias in clientAliases) {
+            var newDiv = document.createElement("div");
+            var alias = document.createTextNode(info.alias); 
+            newDiv.appendChild(alias);
+
+            var gridDiv = document.getElementById("nameGrid"); 
+            gridDiv.appendChild(newDiv);
+          }
         } else if (info.removeAlias != undefined) {
           clientAliases = clientAliases.filter(e => e !== info.removeAlias);
         }
@@ -95,9 +109,6 @@
           document.getElementsByClassName("btn")[0].disabled = false;
         }
     });
-    socket.on('update pregame info', (info) => {
-      console.log(info);
-    })
     createGame();
   </script>
 </body>
