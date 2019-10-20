@@ -93,8 +93,8 @@ function processRoundData (lyricData) {
 }
 // console.log(JSON.stringify(processRoundData(jsonLyricFiles[0].lyricData)))
 // console.log(JSON.stringify(processRoundData(jsonLyricFiles[1].lyricData)))
-console.log(JSON.stringify(processRoundData(jsonLyricFiles[2].lyricData)))
-console.log(JSON.stringify(processRoundData(jsonLyricFiles[3].lyricData)))
+//console.log(JSON.stringify(processRoundData(jsonLyricFiles[2].lyricData)))
+//console.log(JSON.stringify(processRoundData(jsonLyricFiles[3].lyricData)))
 // console.log(JSON.stringify(processRoundData(jsonLyricFiles[4].lyricData)))
 // console.log(JSON.stringify(processRoundData(jsonLyricFiles[5].lyricData)))
 // console.log(JSON.stringify(processRoundData(jsonLyricFiles[6].lyricData)))
@@ -149,7 +149,7 @@ io.on('connection', (socket) => {
   socket.on('gimme da line', () => {
     currentPlayer = socket.room.clients.pop()
     currentPlayer.emit('gimme da line');
-    
+
     //Once the player has said the line, put the player at the back of the player order.
     // socket.room.currentPlayer = socket.room.currentPlayer + 1 >= socket.clients.length ? 0 : socket.room.currentPlayer + 1
   })
@@ -187,8 +187,24 @@ io.on('connection', (socket) => {
   })
 
   socket.on('client result', (transcription) => {
-    // TODO: verify transcription, attribute points accordingly
-    const correct = socket.room.roundLineData.answer == transcription /// / TODO: make this more merciful
+    //collect character frequency of each letter, compare to character frequency of answer
+    function getFrequency(string) {
+    var freq = {};
+    for (var i=0; i<string.length;i++) {
+        var character = string.charAt(i);
+        if (freq[character]) {
+           freq[character]++;
+        } else {
+           freq[character] = 1;
+        }
+    }
+    return freq;
+    };
+    var tFreq = getFrequency(transcription);
+    var aFreq = getFrequency(socket.room.roundLineData.answer);
+
+
+    var correct = true; /// / TODO: make this more merciful
     results = {
       transcription: transcription,
       correct: correct
