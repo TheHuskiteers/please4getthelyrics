@@ -256,15 +256,6 @@ app.get('/', (req, res) => {
   res.redirect('/game.html')
 })
 
-app.get('/join/:id', (req, res) => {
-  // Socket logic to join room goes here
-})
-
-app.get('/togglePlay', (req, res) => {
-  // Toggle state of current song
-  // Get room # from request
-})
-
 app.get('/login', (req, res) => {
   res.redirect(spotifyApi.createAuthorizeURL(scopes))
 })
