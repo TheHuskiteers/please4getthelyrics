@@ -109,7 +109,7 @@ function Room (host) {
   }
   this.open = true;
   this.songOrder = shuffle(jsonLyricFiles);
-  this.remainingPlayers = shuffle(this.clients)
+  this.currentPlayer = 0;
 
 }
 
@@ -143,14 +143,18 @@ io.on('connection', (socket) => {
     currentPlayer.emit('gimme da line');
     
     //Once the player has said the line, put the player at the back of the player order.
-    socket.room.clients.unshift(currentPlayer)
+    // socket.room.currentPlayer = socket.room.currentPlayer + 1 >= socket.clients.length ? 0 : socket.room.currentPlayer + 1
   })
 
   socket.on('new round', () => {
-    const nextSong = socket.room.songOrder.pop()
-    const spotifyURI = nextSong.spotifyURI
-    socket.room.roundLineData = processRoundData(nextSong.lyricData)
-    socket.emit('game info', { spotifyURI: spotifyURI, roundLineData: socket.room.roundLineData })
+    if(socket.room.songOrder.length == 0){
+      //TODO: End Game.
+    } else{
+      const nextSong = socket.room.songOrder.pop()
+      const spotifyURI = nextSong.spotifyURI
+      socket.room.roundLineData = processRoundData(nextSong.lyricData)
+      socket.emit('game info', { spotifyURI: spotifyURI, roundLineData: socket.room.roundLineData })
+    }
   })
 
   // handle client joining

@@ -169,7 +169,7 @@
       
       inputJSONLyrics(lyricBox,visibleLines)
 
-      play(songURI,startTimestamp * 1000);
+      play("spotify:track:" + songURI, startTimestamp * 1000);
       playLyrics(lyricBox);
 
       setTimeout(function(){
@@ -179,7 +179,7 @@
       
       setTimeout(function(){
         pause();
-      }, ((firstHiddenTimestamp-startTimestamp)*1000));
+      }, ((firstHiddenTimestamp-startTimestamp)));
       
 
     })
