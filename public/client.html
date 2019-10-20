@@ -37,30 +37,75 @@
         </div>
       </div>
     </div>
-    <script src="js/accessmic.js"></script>
-    <script src="js/rungame.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
   <script type="text/javascript">
     const roomId = document.cookie.replace(/(?:(?:^|.*;\s*)roomNum\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     const alias = document.cookie.replace(/(?:(?:^|.*;\s*)alias\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
+    //Join game
     var socket = io();
     function joinGame(){
       socket.emit('client join', roomId, alias);
       console.log("joining game");
     }
-    joinGame();
+    joinGame();\
+
+    //Access mic once you have connected to game
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function(stream) {
+      console.log('Access to mic allowed!')
+    })
+    .catch(function(err) {
+      console.log('Access to mic denied!')
+    });
+
+    //Start game, wait till it is your turn
     socket.on('game start', () => {
+      document.getElementsById("scorespan").display = "block";
       //refresh html, make it waitturn
     })
+
+    //It is now your turn, play
     socket.on('gimme da line', () => {
+      document.getElementsById("scorespan").display = "block";
+      document.getElementById("load").innerHTML = "Sing!"
+      document.getElementById("load").className = document.getElementById("load").className.replace('',/\bloading\b/);
+      document.documentElement.style.setProperty('--key-color', '#ff9900');
+
+      window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      let finalTranscript = '';
+      let recognition = new window.SpeechRecognition();
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 10;
+      recognition.continuous = false;
+      recognition.onresult = (event) => {
+          document.getElementById("load").className = document.getElementById("load").className.replace('',/\bloading\b/);
+          let interimTranscript = '';
+          for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
+          let transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+              finalTranscript += transcript;
+          } else {
+              interimTranscript += transcript;
+          }
+          }
+          document.querySelector('p').innerHTML = finalTranscript + '<i id="words" style="color:#6e6e6e;">' + interimTranscript + '</>';
+      }
+      recognition.start();
+      recognition.onspeechend = function() {
+          document.documentElement.style.setProperty('--key-color', '#e6e6e6');
+          document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
+          recognition.stop();
+          results();
+      }
       //we need to record the voice, take transcription and put it to variable
-      var transcription = ""
+      var transcription = document.getElementById("words").innerHTML;
       socket.emit('line results', transcription);
     })
   </script>
