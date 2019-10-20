@@ -12,7 +12,7 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, '/public')))
 
-const port = 3000
+const port = process.env.PORT || 3000
 
 var jsonLyricFiles = []
 // Read JSON karaoke Files.
