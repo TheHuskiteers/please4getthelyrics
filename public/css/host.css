@@ -14,7 +14,6 @@ body {
     padding: 8vh 0 8vh 0;
     border: 2px dotted rgb(121, 168, 190);
     border-radius: 10px;
-    background-color: rgb(205, 226, 240);
 }
 
 .btn {
@@ -48,22 +47,4 @@ h2 {
     color: white;
     font-size: 20px;
     width: max-content;
-}
-
-#joining {
-    display: block;
-    /* display: none; */
-}
-
-#playing {
-    display: none;
-    /* display: block; */
-}
-
-#waiting {
-    display: block;
-}
-
-#singing {
-    display: none;
 }
