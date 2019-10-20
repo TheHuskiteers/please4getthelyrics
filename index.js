@@ -5,12 +5,7 @@ var server = require('http').createServer(app)
 var io = require('socket.io')(server)
 var SpotifyWebApi = require('spotify-web-api-node')
 var cookieParser = require('cookie-parser')
-<<<<<<< HEAD
-var server = require('http').createServer(app)
-var io = require('socket.io')(server)
-=======
 var bodyParser = require('body-parser')
->>>>>>> f5aa58e512d3f7613583210569e6eb203b73ba3a
 
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -112,6 +107,10 @@ app.get('/callback', (req, res) => {
 
 app.post('/connect-to-room', (req, res) => {
   console.log(req.body.roomNum)
-  res.cookie('roomNum', req.body.roomNum)
-  res.redirect('/client.html')
+  if (rooms[req.body.roomNum] != undefined) {
+    res.cookie('roomNum', req.body.roomNum)
+    res.redirect('/client.html')
+  }
+  // not easy to return error msg to form submit
+  // so just do nothing if roomId DNE
 })
