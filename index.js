@@ -62,27 +62,32 @@ function processRoundData(lyricData){
   let newLineIndicies = []
   let onSecondCouple = false
   for(let i = startingIndex + 1; i < musicSection.length && !(musicSection[i].lyric == "\\") ; i++){
-    console.log("Lyric" + i + ": " + musicSection[i].lyric)
-    if(musicSection[i] == '/'){
+    console.log("Line: " + musicSection[i].lyric )
+    if(musicSection[i].lyric == '/'){
       newLineIndicies.push(i - startingIndex);
     }
     finalLineCouple.push(musicSection[i])
   }
+  console.log(newLineIndicies);
   //Now, extract a missing line.
-  // let lastLineIndex = newLineIndicies.pop();
-  // let notFullExcerpt = finalExcerpt.slice(0,lastLineIndex)
-  // let hiddenString = '' 
-  // for(let i = lastLineIndex + 1; i < finalLineCouple.length; i++){
-  //   hiddenString += finalLineCouple[i].lyric
-  //   notFullExcerpt.push({
-
-  //   })
-  // }
+  let lastLineIndex = newLineIndicies.pop();
+  let visibleLines = finalLineCouple.slice(0)
+  let hiddenLines = []
+  let answerString = '' 
+  for(let i = lastLineIndex + 1; i < finalLineCouple.length; i++){
+    answerString += finalLineCouple[i].lyric
+    hiddenLines.push(finalLineCouple[i])
+    visibleLines[i] = {
+      timestamp: -1,
+      lyric: '__'
+    }
+  }
   //TODO: Pick half the line.
   return {
-    fullExcerpt: finalLineCouple,
-    notFullExcerpt: 0,
-    hiddenString: 0
+    finalLineCouple: finalLineCouple,
+    visibleLines: visibleLines,
+    hidddenLines: hiddenLines,
+    answer: answerString
   }
 }
 console.log(JSON.stringify(processRoundData(jsonLyricFiles[6].lyricData)))
