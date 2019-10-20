@@ -40,10 +40,17 @@ body {
 }
 
 .pic {
-    height: 50%;
-    width: 50%;
+    height: 75%;
+    width: 75%;
     opacity: 1.0;
     margin-top:10%;
+}
+
+.rawpic {
+  height: 60%;
+  width: 60%;
+  opacity: 1.0;
+  margin-top:10%;
 }
 
 #aura{
