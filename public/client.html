@@ -66,6 +66,7 @@
     //Start game, wait till it is your turn
     socket.on('game start', () => {
       document.getElementById("scorespan").display = "block";
+      document.getElementById("load").innerHTML = "Waiting for your turn";
       //refresh html, make it waitturn
     })
 
