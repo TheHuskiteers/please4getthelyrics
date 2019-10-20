@@ -50,9 +50,9 @@ function results() {
     document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
     var words = document.getElementById("words").innerHTML;
     document.getElementById("aura").setAttribute("animation-play-state", "paused");
-    console.log(words);
-    document.getElementById('score').textContent;       //UPDATE SCORE
-    document.getElementById('position').textContent;    //UPDATE POSITION
+    console.log(words);                                 //words is the string of the voice to text
+    document.getElementById("score").textContent;       //UPDATE SCORE
+    document.getElementById("position").textContent;    //UPDATE POSITION
 }
 
 timer();
