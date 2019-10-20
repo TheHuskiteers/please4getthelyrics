@@ -57,8 +57,17 @@ io.on('connection', (socket) => {
 
   socket.on('game start', () => {
     socket.room.open = false;
+
     // TODO: Acually start game. Fetch song data, pick song,
+    var gameInfo = {};
+    socket.emit('game info', gameInfo)
   })
+
+  socket.on('gimme da line', () => {
+    socket.room.clients[/*current player*/].emit('gimme da line');
+  })
+
+
 
   // handle client joining
   socket.on('client join', (roomId, username) => {
@@ -78,6 +87,12 @@ io.on('connection', (socket) => {
 
   })
 
+  socket.on('client result', (transcription) => {
+    // TODO: verify transcription, attribute points accordingly
+    socket.room.host.emit('results')
+  })
+
+  //handle disconnect
   socket.on('disconnect', (reason) => {
     console.log((socket.host) ? 'Host ' + socket.id + " has left, because of '" + reason + "'." : 'Client ' + socket.id + " has left, because of '" + reason + "'.")
 
