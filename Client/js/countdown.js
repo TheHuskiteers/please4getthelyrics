@@ -23,7 +23,6 @@ function mic() {
         recognition.maxAlternatives = 10;
         recognition.continuous = false;
         recognition.onresult = (event) => {
-            document.documentElement.style.setProperty('--key-color', '#ff9900');
             document.getElementById("load").className = document.getElementById("load").className.replace('',/\bloading\b/);
             let interimTranscript = '';
             for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
@@ -34,16 +33,24 @@ function mic() {
                 interimTranscript += transcript;
             }
             }
-            document.querySelector('p').innerHTML = finalTranscript + '<i style="color:#ddd;">' + interimTranscript + '</>';
+            document.querySelector('p').innerHTML = finalTranscript + '<i id="words" style="color:#6e6e6e;">' + interimTranscript + '</>';
         }
         recognition.start();
         recognition.onspeechend = function() {
-            document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
-            document.getElementById("aura").style.animationName = "false";
             document.documentElement.style.setProperty('--key-color', '#e6e6e6');
+            document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
             recognition.stop();
+            results();
         }
       }, 1000);
+}
+
+function results() {
+    document.documentElement.style.setProperty('--key-color', '#e6e6e6');
+    document.getElementById("load").className = document.getElementById("load").className.replace(/\bloading\b/,'');
+    var words = document.getElementById("words").innerHTML;
+    document.getElementById("aura").setAttribute("animation-duration", "0s");
+    console.log(words);
 }
 
 timer();
