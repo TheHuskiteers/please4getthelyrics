@@ -1,3 +1,10 @@
+# Hey, what's this branch.
+Our code is in working condition, but some parts of it are organizationally a nightmare. My goal is to make the code more modular, such as
+* Separating script elements into independant JS files -- Done (untested)
+* Separating client and host into their own folders -- Done (untested)
+* Adjusting KAR-son files to include the title of the song and the ID in the actual file.
+* Splitting up our index.js file into a piece for game logic and a piece for sockets.
+
 # please4getthelyrics
 So you think you know music? Test your knowledge with a music lyric quiz unlike any other.
 
