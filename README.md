@@ -1,4 +1,4 @@
-# Hey, what's this branch.
+# Hey, what's this branch?
 Our code is in working condition, but some parts of it are organizationally a nightmare. My goal is to make the code more modular, such as
 * Separating script elements into independant JS files -- Done (untested)
 * Separating client and host into their own folders -- Done (untested)
@@ -22,4 +22,4 @@ The application programs reside on a remote server and that are delivered to pla
 ##How to use:
 You can either use the QR code below or download the repo and run it in a web browser on any device.
 
-<a href="../html-link.htm"><img src="public/pictures/qr-code.png" alt="QR" width="150px" height="150px">
+<a href="../html-link.htm"><img src="public/shared/images/qr-code.png" alt="QR" width="150px" height="150px">
