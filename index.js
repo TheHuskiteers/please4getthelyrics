@@ -277,7 +277,7 @@ var spotifyApi = new SpotifyWebApi({
 
 const scopes = ['streaming', 'user-modify-playback-state']
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => { //Possibly unused call.
   res.redirect('/game.html')
 })
 
@@ -291,7 +291,7 @@ app.get('/callback', (req, res) => {
     spotifyApi.setAccessToken(data.body.access_token);
     spotifyApi.setRefreshToken(data.body.refresh_token);
     res.cookie('token', data.body.access_token, { maxAge: data.body.expires_in })
-    res.redirect('/host.html')
+    res.redirect('/host/index.html')
   }).catch((err) => console.log('Yikes! ' + err.message))
 })
 
@@ -300,7 +300,7 @@ app.post('/connect-to-room', (req, res) => {
   if (rooms[req.body.roomNum] !== undefined) { // if room exists
     res.cookie('roomNum', req.body.roomNum)
     res.cookie('alias', req.body.alias)
-    res.redirect('/client.html')
+    res.redirect('/client/.html')
   }
   // not easy to return error msg to form submit
   // so just do nothing if roomId DNE

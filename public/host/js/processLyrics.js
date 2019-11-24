@@ -1,10 +1,13 @@
-// var fs = require('fs')
-// var jsonLyricFile = fs.readFileSync(__dirname + '/karson/2KH16WveTQWT6KOG9Rg6e2.json', 'utf-8')
-
-// jsonLyrics = JSON.parse(jsonLyricFile)
-/*
-FOR USE WITH THE gameSpace html.
-*/
+/*  processLyircs.js
+ *  Contains functions that take clips of KAR-son files as input and return them 
+ *  inputJSONLyrics: inputs a JSON file of syllables and timestamps and a div for lyrics
+ *    Processes the clip properly with animation timing for "swiping" over each lyric.
+ *  playLyrics: toggles the animation state of divs with the class 'lyric' from paused to play in a lyricBox.
+ *  emptyLyrics: removes all lyrics from a box.
+ *  getRoundLyrics: Given a full KAR-son, randomly picks a section of the song and a few lines of the song. 
+ * 
+ * 
+ */
 
 const lyricBox = document.getElementById('lyrics')
 
@@ -44,7 +47,7 @@ function inputJSONLyrics (lyricBox, JSONClip) {
       prevSyl = syl
       prevSylBlock = currentSylBlock
     }
-    // Assume its a syllable.
+    // Assume it's a syllable.
   }
 }
 
@@ -80,6 +83,10 @@ function getRoundLyrics (lyricData) {
   return finalSection
 }
 
+// Code for testing.
+// var fs = require('fs')
+// var jsonLyricFile = fs.readFileSync(__dirname + '/karson/2KH16WveTQWT6KOG9Rg6e2.json', 'utf-8')
+// jsonLyrics = JSON.parse(jsonLyricFile)
 // let exampleJSONClip = [ { timestamp: 84.19178010391235, lyric: '\\' },
 // { timestamp: 84.19179010391235, lyric: 'It\'s' },
 // { timestamp: 84.56093621253967, lyric: ' the' },

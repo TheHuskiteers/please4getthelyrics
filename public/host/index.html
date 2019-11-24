@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Please 4get The Lyrics</title>
+</head>
+<link rel="stylesheet" href="../shared/css/main.css">
+
+<body>
+
+  <div id="lobbyDiv">
+    <div class="container1">
+      <h1 id="waiting">Waiting for players</h1>
+      <h3 id="curPlayers">Current players: 0</h3>
+    </div>
+
+    <div class="container2">
+      <h2>Karaoke Room ID:</h2>
+      <p id="code">Loading...</p>
+    </div>
+    <div id="nameGrid">
+      <div></div>
+    </div>
+    <button class="btn" onclick="startGame()">Start game!</button>
+  </div>
+
+  <div style="display:none;" id="gameDiv">
+    <div id="roundHeader">
+      <h2>Round <span id="roundNum">0</span></h2>
+    </div>
+    <div id="roundWordSpace">
+      <div id="lyrics">
+
+      </div>
+    </div>
+    <div id="roundFooter">
+      <div>
+        <span id="responseText"></span>
+      </div>
+    </div>
+  </div>
+  <script src="js/processLyrics.js"></script>
+  <script>
+    if (document.cookie.indexOf('token') == -1) {
+      window.location = "/login"
+    }
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    var did;
+  </script>
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script src="js/hostSpoitfy.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js" charset="utf-8"></script>
+  <script src="js/hostSockets.js"></script>
+</body>
+</html>
